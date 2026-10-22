@@ -1,0 +1,26 @@
+# Build
+bin/
+obj/
+.vs/
+*.user
+*.suo
+TestResults/
+publish/
+
+# Secretos y configuración local: solo se versiona el archivo de ejemplo
+appsettings*.json
+!appsettings.example.json
+.env
+*.pfx
+secrets.json
+
+# Registros y temporales
+Logs/
+*.log
+~$*
+Thumbs.db
+*.url
+*.lnk
+
+# Datos locales de Docker
+docker/data/
