@@ -1,6 +1,6 @@
 # Requisitos del módulo
 
-Estado: **borrador v0.1** para revisión. Se congela al terminar la Fase 1. Lo que no esté aquí va a «mejoras pendientes».
+Estado: **borrador v0.2** (historias en `historias.md`, casos de uso en `casos-de-uso.md` y reglas en `reglas.md`). Se congela al terminar la Fase 1. Lo que no esté aquí va a «mejoras pendientes».
 
 Origen de cada requisito: análisis del sistema original (`reglas-negocio`, `inventario-funcional`) y validación con un usuario real (2026-10-20). Se citan con la etiqueta **Origen**.
 
@@ -36,7 +36,7 @@ Prioridad (MoSCoW): **M** imprescindible · **S** deseable · **C** si hay tiemp
 
 ## Reglas de negocio
 
-Se numerarán `RN-xx` en `specs/functional/reglas.md` (pendiente), con su origen y su caso de prueba.
+Están numeradas `RN-xx` en `reglas.md`, con su origen y su prueba prevista.
 
 ## Pendiente de validar con un usuario
 

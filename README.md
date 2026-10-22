@@ -2,7 +2,7 @@
 
 Proyecto integrador del curso *Agentic Software Development (.NET 10)*. Es el módulo central de la modernización del sistema SISMAN (gestión de mantenimiento de una editora): **mantenimiento preventivo (MP) → fecha programada → orden de trabajo (OT)**.
 
-> **Estado:** en construcción. Fase actual: especificaciones (Fase 1 del plan de trabajo). No hay código todavía.
+> **Estado:** en construcción. Fase actual: especificaciones (Fase 1 del [plan de trabajo](docs/plan-de-trabajo.md)): requisitos, historias, casos de uso y reglas en borrador. No hay código todavía.
 
 ## Alcance
 
@@ -47,6 +47,8 @@ Registro en [`docs/ia/`](docs/ia/). Cada entrada indica el prompt, la respuesta 
 
 - [Alcance](docs/alcance.md)
 - [Requisitos funcionales y no funcionales](specs/functional/requisitos.md)
+- [Historias de usuario](specs/functional/historias.md) · [Casos de uso](specs/functional/casos-de-uso.md) · [Reglas de negocio](specs/functional/reglas.md)
+- [Plan de trabajo](docs/plan-de-trabajo.md)
 - [Matriz de trazabilidad](docs/trazabilidad.md)
 - [Convenciones de commits y trabajo](docs/convenciones.md)
 - [Decisiones de arquitectura](docs/adr/)
