@@ -11,7 +11,7 @@ El responsable confirmó con *«si»* que se continuara con las historias de usu
 
 ## Respuesta relevante
 
-El asistente leyó el análisis del sistema original (reglas de MP, fechas y OT, con sus hallazgos y la validación con un usuario) y redactó: 12 historias con criterios Dado/Cuando/Entonces, 9 casos de uso (prioridad M) y 40 reglas `RN-xx`. A cada regla le puso una marca: **heredada**, **corrige** (un defecto del original), **nueva** o **a validar**.
+El asistente leyó el análisis del sistema original (reglas de MP, fechas y OT, con sus hallazgos y la validación con un usuario) y redactó: 12 historias con criterios Dado/Cuando/Entonces, 9 casos de uso (prioridad M) y 34 reglas `RN-xx`. A cada regla le puso una marca: **heredada**, **corrige** (un defecto del original), **nueva** o **a validar**.
 
 ## Cambio
 
