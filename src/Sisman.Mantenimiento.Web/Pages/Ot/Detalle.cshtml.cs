@@ -6,12 +6,14 @@ namespace Sisman.Mantenimiento.Web.Pages.Ot;
 public class DetalleModel(ApiCliente api) : PaginaBase(api)
 {
     public OtDto? Ot { get; private set; }
+    public string? Maquina { get; private set; }
 
     public async Task<IActionResult> OnGetAsync(int id, CancellationToken ct)
     {
         try
         {
             Ot = await Api.ObtenerOtAsync(id, ct);
+            Maquina = await NombreMaquinaAsync(Ot.MaquinaId, ct);
         }
         catch (ApiException e) when (e.Estado == 404)
         {

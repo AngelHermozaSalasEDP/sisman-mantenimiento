@@ -6,6 +6,7 @@ namespace Sisman.Mantenimiento.Web.Pages.Mp;
 public class DetalleModel(ApiCliente api) : PaginaBase(api)
 {
     public MpDto? Mp { get; private set; }
+    public string? Maquina { get; private set; }
 
     [BindProperty] public DateOnly? Inicio { get; set; }
     [BindProperty] public DateOnly? Fin { get; set; }
@@ -15,6 +16,7 @@ public class DetalleModel(ApiCliente api) : PaginaBase(api)
         try
         {
             Mp = await Api.ObtenerMpAsync(id, ct);
+            Maquina = await NombreMaquinaAsync(Mp.MaquinaId, ct);
         }
         catch (ApiException e) when (e.Estado == 404)
         {

@@ -34,7 +34,7 @@ else if (mp is not null)
     <dl class="ficha">
         <dt>Descripción</dt><dd>@mp.Descripcion</dd>
         <dt>Frecuencia</dt><dd>@Textos.Frecuencia(mp.Frecuencia), cada @mp.ValorFrecuencia @(mp.Mes is null ? "" : $"· mes {mp.Mes}")</dd>
-        <dt>Máquina</dt><dd>@mp.MaquinaId</dd>
+        <dt>Máquina</dt><dd>@Model.Maquina</dd>
         <dt>Fecha de inicio</dt><dd>@Textos.Fecha(mp.FechaInicio)</dd>
         <dt>Próxima fecha</dt><dd>@Textos.Fecha(mp.FechaProxima)</dd>
         <dt>Última fecha</dt><dd>@Textos.Fecha(mp.FechaUltima)</dd>

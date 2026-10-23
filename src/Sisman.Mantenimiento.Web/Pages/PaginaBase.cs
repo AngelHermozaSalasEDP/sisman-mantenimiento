@@ -12,6 +12,13 @@ public abstract class PaginaBase(ApiCliente api) : PageModel
     /// <summary>Solo el planificador ve las acciones de escritura (RN-03); la API igual las rechaza con 403.</summary>
     public bool EsPlanificador => User.IsInRole("Planificador");
 
+    /// <summary>Código y nombre de la máquina («MAQ-001 · Prensa»), o el número si no se encuentra.</summary>
+    protected async Task<string> NombreMaquinaAsync(int maquinaId, CancellationToken ct)
+    {
+        var m = (await Api.MaquinasAsync(ct)).FirstOrDefault(x => x.Id == maquinaId);
+        return m is null ? maquinaId.ToString() : $"{m.Codigo} · {m.Nombre} ({m.Area})";
+    }
+
     /// <summary>Mensaje de error de la carga de la página, si la API lo rechazó.</summary>
     public string? ErrorCarga { get; protected set; }
 
