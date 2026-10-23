@@ -1,0 +1,57 @@
+@page "/ot"
+@model Sisman.Mantenimiento.Web.Pages.Ot.IndexModel
+@{
+    ViewData["Title"] = "Órdenes de trabajo";
+}
+
+<h1>Órdenes de trabajo</h1>
+
+<form method="get" class="filtros">
+    <label>Número <input name="numero" type="number" min="1" value="@Model.Numero" /></label>
+    <label>
+        Estado
+        <select name="estado">
+            <option value="">Todos</option>
+            @foreach (var e in Sisman.Mantenimiento.Web.Pages.Ot.IndexModel.Estados)
+            {
+                <option value="@e" selected="@(Model.Estado == e)">@Textos.Estado(e)</option>
+            }
+        </select>
+    </label>
+    <button type="submit" class="boton">Buscar</button>
+    <a href="/ot" class="boton secundario">Limpiar</a>
+</form>
+
+@if (Model.ErrorCarga is not null)
+{
+    <div class="aviso error" role="alert">@Model.ErrorCarga</div>
+}
+else if (Model.Resultado is { } r)
+{
+    <p class="nota">@r.Total órdenes · página @r.PaginaActual de @r.TotalPaginas</p>
+    <table>
+        <thead>
+            <tr><th>Número</th><th>Descripción</th><th>Prioridad</th><th>Estado</th><th>Fecha objetivo</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var ot in r.Items)
+            {
+                <tr>
+                    <td><a href="/ot/@ot.Id">@ot.Numero</a></td>
+                    <td>@ot.Descripcion</td>
+                    <td>@ot.Prioridad</td>
+                    <td><span class="etiqueta e@(ot.Estado)">@Textos.Estado(ot.Estado)</span></td>
+                    <td>@Textos.Fecha(ot.FechaObjetivo)</td>
+                </tr>
+            }
+            @if (r.Items.Count == 0)
+            {
+                <tr><td colspan="5" class="vacio">No hay órdenes con esos filtros.</td></tr>
+            }
+        </tbody>
+    </table>
+    <nav class="paginas">
+        @if (r.PaginaActual > 1) { <a href="@Model.Enlace(r.PaginaActual - 1)">‹ Anterior</a> }
+        @if (r.PaginaActual < r.TotalPaginas) { <a href="@Model.Enlace(r.PaginaActual + 1)">Siguiente ›</a> }
+    </nav>
+}

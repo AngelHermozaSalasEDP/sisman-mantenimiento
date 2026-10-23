@@ -1,0 +1,13 @@
+﻿@page
+@model ErrorModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1>Ocurrió un error</h1>
+<p>No se pudo completar la solicitud. Intente de nuevo; si el problema sigue, indique este identificador al soporte.</p>
+@if (Model.ShowRequestId)
+{
+    <p><strong>Identificador:</strong> <code>@Model.RequestId</code></p>
+}
+<p><a href="/mp">Volver al inicio</a></p>

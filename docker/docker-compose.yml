@@ -1,5 +1,5 @@
 # Uso (desde esta carpeta):  copy .env.example .env  y editar las claves;  docker compose up --build
-# La API queda en http://localhost:8080/swagger. Las claves vienen de .env (no versionado).
+# La API queda en http://localhost:8080/swagger y la web en http://localhost:8081. Las claves vienen de .env (no versionado).
 services:
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -21,6 +21,8 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
+      args:
+        PROYECTO: Sisman.Mantenimiento.Api
     depends_on:
       db:
         condition: service_healthy
@@ -35,6 +37,20 @@ services:
       Semilla__ClaveEspecialista: ${CLAVE_ESPECIALISTA:?defina CLAVE_ESPECIALISTA en .env}
     ports:
       - "8080:8080"
+
+  web:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      args:
+        PROYECTO: Sisman.Mantenimiento.Web
+    depends_on:
+      - api
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      Api__UrlBase: http://api:8080/
+    ports:
+      - "8081:8080"
 
 volumes:
   sisman-datos:

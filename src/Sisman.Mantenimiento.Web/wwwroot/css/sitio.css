@@ -1,0 +1,111 @@
+/* Hoja de estilos propia y mínima (D4 del documento 33): sin dependencias externas. */
+:root {
+    --fondo: #f5f6f8;
+    --superficie: #ffffff;
+    --texto: #1d2330;
+    --texto-suave: #5b6475;
+    --borde: #d9dde4;
+    --primario: #1f5fa8;
+    --primario-oscuro: #174a84;
+    --exito-fondo: #e6f4ea;
+    --exito-texto: #1e6b34;
+    --error-fondo: #fdecea;
+    --error-texto: #a11d16;
+    --radio: 6px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--texto);
+    background: var(--fondo);
+}
+
+a { color: var(--primario); }
+
+h1 { font-size: 1.6rem; margin: 0 0 1rem; }
+h2 { font-size: 1.15rem; margin: 2rem 0 .75rem; }
+
+.barra {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: .75rem 1.5rem;
+    background: var(--superficie);
+    border-bottom: 1px solid var(--borde);
+}
+.barra nav { display: flex; gap: 1.25rem; flex: 1; }
+.barra nav a { color: var(--texto-suave); text-decoration: none; padding: .25rem 0; border-bottom: 2px solid transparent; }
+.barra nav a.activo { color: var(--texto); border-bottom-color: var(--primario); }
+.marca { font-weight: 700; color: var(--texto); text-decoration: none; }
+.marca span, .login h1 span { font-weight: 400; color: var(--texto-suave); }
+.sesion { display: flex; align-items: center; gap: .75rem; margin: 0; color: var(--texto-suave); }
+
+.contenido { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+
+.boton {
+    display: inline-block;
+    padding: .45rem .9rem;
+    border: 1px solid var(--primario);
+    border-radius: var(--radio);
+    background: var(--primario);
+    color: #fff;
+    font: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+.boton:hover { background: var(--primario-oscuro); }
+.boton.secundario { background: transparent; color: var(--primario); }
+.boton.secundario:hover { background: #eaf1fa; }
+
+input, select {
+    font: inherit;
+    padding: .4rem .55rem;
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    background: #fff;
+}
+
+.filtros { display: flex; flex-wrap: wrap; align-items: flex-end; gap: .75rem; margin-bottom: 1rem; }
+.filtros label { display: flex; flex-direction: column; gap: .25rem; color: var(--texto-suave); font-size: .9rem; }
+.filtros form { margin: 0; }
+
+table { width: 100%; border-collapse: collapse; background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio); }
+th, td { text-align: left; padding: .55rem .75rem; border-bottom: 1px solid var(--borde); vertical-align: middle; }
+th { font-weight: 600; color: var(--texto-suave); font-size: .9rem; }
+td form { margin: 0; }
+.vacio { color: var(--texto-suave); text-align: center; }
+
+.paginas { display: flex; gap: 1rem; justify-content: flex-end; margin-top: .75rem; }
+.nota { color: var(--texto-suave); font-size: .9rem; }
+
+.aviso { padding: .65rem .9rem; border-radius: var(--radio); margin-bottom: 1rem; }
+.aviso.exito { background: var(--exito-fondo); color: var(--exito-texto); }
+.aviso.error { background: var(--error-fondo); color: var(--error-texto); }
+
+.titulo { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+.titulo h1 { margin: 0; }
+.titulo form { margin: 0 0 0 auto; }
+
+.ficha { display: grid; grid-template-columns: 12rem 1fr; gap: .4rem 1rem; background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio); padding: 1rem; margin: 0; }
+.ficha dt { color: var(--texto-suave); }
+.ficha dd { margin: 0; }
+
+.acciones { display: flex; flex-wrap: wrap; gap: .5rem; }
+.acciones form { margin: 0; }
+
+.etiqueta { display: inline-block; padding: .1rem .55rem; border-radius: 999px; font-size: .85rem; background: #eceff3; color: var(--texto); }
+.etiqueta.aprobado, .etiqueta.e41 { background: var(--exito-fondo); color: var(--exito-texto); }
+.etiqueta.modificado, .etiqueta.e39 { background: #fff4e0; color: #8a5300; }
+.etiqueta.e38, .etiqueta.e42 { background: var(--error-fondo); color: var(--error-texto); }
+.etiqueta.e40 { background: #e8f0fb; color: var(--primario-oscuro); }
+
+.login { max-width: 360px; margin: 8vh auto 0; background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio); padding: 2rem; }
+.login form { display: flex; flex-direction: column; gap: .35rem; }
+.login label { margin-top: .5rem; color: var(--texto-suave); font-size: .9rem; }
+.login .boton { margin-top: 1rem; }
+.campo-error { color: var(--error-texto); font-size: .85rem; }

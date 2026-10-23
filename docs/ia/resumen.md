@@ -1,6 +1,6 @@
 # Resumen del uso de IA
 
-Estado: **parcial** (12 evidencias registradas; se amplía con cada tarea).
+Estado: **parcial** (13 evidencias registradas; se amplía con cada tarea).
 
 | # | Entrada | Tipo | Resultado |
 |---|---|---|---|
@@ -16,6 +16,7 @@ Estado: **parcial** (12 evidencias registradas; se amplía con cada tarea).
 | 010 | Endpoints de MP (RF-02 a RF-05) con pruebas de integración | código y pruebas | Aceptado; 4 decisiones por confirmar |
 | 011 | RF-07: correlativo transaccional, prueba de 20 solicitudes y prueba de mutación | código, pruebas y depuración | Aceptado; el primer fallo era de la prueba |
 | 012 | RF-08 y RF-09: consulta de OT y cambio de estado | código y pruebas | Aceptado con 2 autocorrecciones; RNF-01 sin medir |
+| 013 | Web mínima de demostración con recorrido de la demo | código y pruebas | Aceptado; el primer recorrido falló por el script |
 
 ## Dónde ayudó la IA
 

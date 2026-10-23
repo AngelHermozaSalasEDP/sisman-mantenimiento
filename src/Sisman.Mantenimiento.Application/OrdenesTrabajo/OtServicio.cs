@@ -14,6 +14,7 @@ public record OtDto(
     int MaquinaId, int? SistemaId, int? EquipoId, int TipoTrabajoId, int FuenteId, int OportunidadId, int EspecialidadId,
     int MantenimientoPreventivoId, DateOnly FechaObjetivo, string CreadoPor, DateTime CreadoEn,
     string? ModificadoPor, DateTime? ModificadoEn,
+    IReadOnlyList<int> TransicionesPermitidas,
     IReadOnlyList<HistorialDto> Historial)
 {
     public static OtDto Desde(OrdenTrabajo o, bool conHistorial = true) => new(
@@ -21,6 +22,7 @@ public record OtDto(
         o.MaquinaId, o.SistemaId, o.EquipoId, o.TipoTrabajoId, o.FuenteId, o.OportunidadId, o.EspecialidadId,
         o.MantenimientoPreventivoId, o.FechaObjetivo, o.CreadoPor, o.CreadoEn,
         o.ModificadoPor, o.ModificadoEn,
+        o.TransicionesPermitidas.Select(e => (int)e).ToList(),
         conHistorial
             ? o.Historial.OrderBy(h => h.Fecha).ThenBy(h => h.Id)
                 .Select(h => new HistorialDto((int)h.EstadoAnterior, (int)h.EstadoNuevo, h.Usuario, h.Fecha)).ToList()

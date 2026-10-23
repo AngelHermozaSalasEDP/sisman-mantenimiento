@@ -2,7 +2,7 @@
 
 Proyecto integrador del curso *Agentic Software Development (.NET 10)*. Es el módulo central de la modernización del sistema SISMAN (gestión de mantenimiento de una editora): **mantenimiento preventivo (MP) → fecha programada → orden de trabajo (OT)**.
 
-> **Estado:** solución base compilable (2026-10-23): dominio, EF Core con migración y datos de ejemplo, inicio de sesión con JWT (RF-11), errores `ProblemDetails` y correlación. Los casos de uso RF-02 a RF-09 se implementan del 26 al 28/10. Ver el [plan de trabajo](docs/plan-de-trabajo.md).
+> **Estado (2026-10-23):** implementados RF-11 (login con JWT), RF-02 a RF-05 (mantenimiento preventivo y fechas), RF-07 (OT con número transaccional, probado con 20 solicitudes simultáneas), RF-08 y RF-09 (consulta y estado de OT), y la web mínima de demostración. 92 pruebas en verde. Fuera de la implementación, con especificación: RF-01, RF-06, RF-10 y RF-12. Ver la [matriz de trazabilidad](docs/trazabilidad.md).
 
 ## Alcance
 
@@ -24,11 +24,11 @@ Un módulo acotado. Ver [`docs/alcance.md`](docs/alcance.md). Lo que queda fuera
 ## Estructura
 
 ```
-src/            Domain, Application, Infrastructure, Api
-tests/          UnitTests (dominio) e IntegrationTests (API + SQL Server)
+src/            Domain, Application, Infrastructure, Api y Web (web mínima de demostración)
+tests/          UnitTests (dominio), IntegrationTests (API + SQL Server) y WebTests (web con la API simulada)
 specs/          functional/ y technical/
 docs/           alcance, convenciones, trazabilidad, adr/, ia/, arquitectura/, api/
-docker/         Docker Compose (SQL Server 2022 + API) y Dockerfile
+docker/         Docker Compose (SQL Server 2022 + API + web) y Dockerfile
 ```
 
 ## Cómo ejecutar
@@ -43,7 +43,7 @@ copy .env.example .env      # y edite las cuatro claves
 docker compose up --build
 ```
 
-La API queda en http://localhost:8080/swagger. Al arrancar aplica las migraciones y carga los datos de ejemplo.
+La API queda en http://localhost:8080/swagger y la web en http://localhost:8081. Al arrancar, la API aplica las migraciones y carga los datos de ejemplo. (El Compose está escrito pero no se ha ejecutado: en el equipo de desarrollo no hay Docker.)
 
 **Opción B: SQL Server local o LocalDB (sin Docker)**
 
@@ -59,6 +59,14 @@ dotnet user-secrets set "Semilla:ClaveEspecialista" "<clave de prueba>"
 dotnet run
 ```
 
+Con la API en marcha (en http://localhost:5300), la web mínima se levanta en otra terminal:
+
+```
+dotnet run --project src/Sisman.Mantenimiento.Web --urls http://localhost:5400
+```
+
+Abre http://localhost:5400 e inicia sesión con un usuario de prueba. La dirección de la API se cambia con `Api:UrlBase` (variable `Api__UrlBase`).
+
 Las migraciones también se pueden aplicar a mano: `dotnet tool restore` y `dotnet ef database update -p src/Sisman.Mantenimiento.Infrastructure -s src/Sisman.Mantenimiento.Api` (la cadena sale de `SISMAN_CONNECTION`, o LocalDB si no existe).
 
 **Pruebas**
@@ -67,7 +75,7 @@ Las migraciones también se pueden aplicar a mano: `dotnet tool restore` y `dotn
 dotnet test
 ```
 
-Las pruebas de integración crean una base propia (`SismanPruebas_<guid>`) y la borran al terminar. Usan LocalDB, o la instancia indicada en `SISMAN_TEST_CONNECTION` (sin nombre de base).
+Las pruebas de la web no necesitan la API ni la base: usan una API simulada. Las pruebas de integración crean una base propia (`SismanPruebas_<guid>`) y la borran al terminar. Usan LocalDB, o la instancia indicada en `SISMAN_TEST_CONNECTION` (sin nombre de base).
 
 ## Credenciales de prueba
 

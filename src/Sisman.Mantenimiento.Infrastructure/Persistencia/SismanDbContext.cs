@@ -128,6 +128,7 @@ public class SismanDbContext(DbContextOptions<SismanDbContext> options) : DbCont
             e.HasOne<Catalogo>().WithMany().HasForeignKey(x => x.EspecialidadId).OnDelete(DeleteBehavior.Restrict);
             e.HasMany(x => x.Historial).WithOne().HasForeignKey(h => h.OrdenTrabajoId).OnDelete(DeleteBehavior.Cascade);
             e.Navigation(x => x.Historial).UsePropertyAccessMode(PropertyAccessMode.Field);
+            e.Ignore(x => x.TransicionesPermitidas);
         });
 
         b.Entity<OrdenTrabajoHistorial>(e =>

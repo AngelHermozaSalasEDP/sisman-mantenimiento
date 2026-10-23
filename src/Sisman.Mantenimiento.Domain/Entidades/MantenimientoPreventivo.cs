@@ -63,7 +63,7 @@ public class MantenimientoPreventivo
     public void Aprobar(string usuario, DateTime ahora)
     {
         if (Estado == EstadoMp.Aprobado)
-            throw DominioException.Conflicto("mp.ya-aprobado", $"El MP {Codigo} ya está aprobado.");
+            throw DominioException.Conflicto("mp.ya-aprobado", $"El {Codigo} ya está aprobado.");
         Estado = EstadoMp.Aprobado;
         AprobadoEn = ahora;
         AprobadoPor = usuario;
@@ -77,7 +77,7 @@ public class MantenimientoPreventivo
         if (inicio > fin)
             throw DominioException.Validacion("fecha.rango-invalido", "La fecha de inicio no puede ser posterior a la de fin.");
         if (Estado != EstadoMp.Aprobado)
-            throw DominioException.Conflicto("mp.no-aprobado", $"El MP {Codigo} no está aprobado.");
+            throw DominioException.Conflicto("mp.no-aprobado", $"El {Codigo} no está aprobado.");
         if (_fechas.Any(f => f.FechaInicio == inicio))
             throw DominioException.Conflicto("fecha.duplicada", "Ya existe una fecha programada con ese inicio.");
 

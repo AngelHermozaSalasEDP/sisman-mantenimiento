@@ -1,0 +1,84 @@
+@page "/mp/{id:int}"
+@model Sisman.Mantenimiento.Web.Pages.Mp.DetalleModel
+@{
+    ViewData["Title"] = Model.Mp?.Codigo ?? "Mantenimiento preventivo";
+    var mp = Model.Mp;
+    var manana = DateOnly.FromDateTime(DateTime.Today.AddDays(1)).ToString("yyyy-MM-dd");
+}
+
+<p><a href="/mp">‹ Volver a la lista</a></p>
+
+@if (Model.ErrorCarga is not null)
+{
+    <div class="aviso error" role="alert">@Model.ErrorCarga</div>
+}
+else if (mp is not null)
+{
+    <div class="titulo">
+        <h1>@mp.Codigo</h1>
+        <span class="etiqueta @mp.Estado.ToLowerInvariant()">@mp.Estado</span>
+        @if (Model.EsPlanificador && mp.Estado != "Aprobado")
+        {
+            <form method="post" asp-page-handler="Aprobar" asp-route-id="@mp.Id">
+                <button type="submit" class="boton">Aprobar</button>
+            </form>
+        }
+    </div>
+
+    <dl class="ficha">
+        <dt>Descripción</dt><dd>@mp.Descripcion</dd>
+        <dt>Frecuencia</dt><dd>@Textos.Frecuencia(mp.Frecuencia), cada @mp.ValorFrecuencia @(mp.Mes is null ? "" : $"· mes {mp.Mes}")</dd>
+        <dt>Máquina</dt><dd>@mp.MaquinaId</dd>
+        <dt>Fecha de inicio</dt><dd>@Textos.Fecha(mp.FechaInicio)</dd>
+        <dt>Próxima fecha</dt><dd>@Textos.Fecha(mp.FechaProxima)</dd>
+        <dt>Última fecha</dt><dd>@Textos.Fecha(mp.FechaUltima)</dd>
+        <dt>Modificado</dt><dd>@(mp.ModificadoPor ?? "—") · @Textos.Momento(mp.ModificadoEn)</dd>
+        <dt>Aprobado</dt><dd>@(mp.AprobadoPor ?? "—") · @Textos.Momento(mp.AprobadoEn)</dd>
+    </dl>
+
+    <h2>Fechas programadas</h2>
+    <table>
+        <thead><tr><th>Inicio</th><th>Fin</th><th>Orden de trabajo</th><th></th></tr></thead>
+        <tbody>
+            @foreach (var f in mp.Fechas)
+            {
+                <tr>
+                    <td>@Textos.Fecha(f.FechaInicio)</td>
+                    <td>@Textos.Fecha(f.FechaFin)</td>
+                    <td>@(f.NumeroOt is null ? "Sin OT" : $"OT {f.NumeroOt}")</td>
+                    <td>
+                        @if (Model.EsPlanificador && f.NumeroOt is null && mp.Estado == "Aprobado")
+                        {
+                            <form method="post" asp-page-handler="Generar" asp-route-id="@mp.Id">
+                                <input type="hidden" name="fechaId" value="@f.Id" />
+                                <button type="submit" class="boton">Generar OT</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+            @if (mp.Fechas.Count == 0)
+            {
+                <tr><td colspan="4" class="vacio">Todavía no hay fechas programadas.</td></tr>
+            }
+        </tbody>
+    </table>
+
+    @if (Model.EsPlanificador)
+    {
+        <h2>Programar una fecha</h2>
+        @if (mp.Estado != "Aprobado")
+        {
+            <p class="nota">Solo se programan fechas para un MP aprobado.</p>
+        }
+        else
+        {
+            <form method="post" asp-page-handler="Programar" asp-route-id="@mp.Id" class="filtros">
+                <label>Inicio <input type="date" name="Inicio" min="@manana" required /></label>
+                <label>Fin <input type="date" name="Fin" min="@manana" required /></label>
+                <button type="submit" class="boton">Programar</button>
+            </form>
+            <p class="nota">La fecha de inicio debe ser posterior a hoy.</p>
+        }
+    }
+}

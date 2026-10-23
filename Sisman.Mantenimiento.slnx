@@ -4,9 +4,11 @@
     <Project Path="src/Sisman.Mantenimiento.Application/Sisman.Mantenimiento.Application.csproj" />
     <Project Path="src/Sisman.Mantenimiento.Domain/Sisman.Mantenimiento.Domain.csproj" />
     <Project Path="src/Sisman.Mantenimiento.Infrastructure/Sisman.Mantenimiento.Infrastructure.csproj" />
+    <Project Path="src/Sisman.Mantenimiento.Web/Sisman.Mantenimiento.Web.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Sisman.Mantenimiento.IntegrationTests/Sisman.Mantenimiento.IntegrationTests.csproj" />
     <Project Path="tests/Sisman.Mantenimiento.UnitTests/Sisman.Mantenimiento.UnitTests.csproj" />
+    <Project Path="tests/Sisman.Mantenimiento.WebTests/Sisman.Mantenimiento.WebTests.csproj" />
   </Folder>
 </Solution>

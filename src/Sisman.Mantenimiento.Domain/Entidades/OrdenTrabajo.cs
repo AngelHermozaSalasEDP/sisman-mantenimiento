@@ -40,6 +40,10 @@ public class OrdenTrabajo
 
     public IReadOnlyCollection<OrdenTrabajoHistorial> Historial => _historial;
 
+    /// <summary>Estados a los que se puede pasar desde el actual (RN-37); la interfaz los ofrece sin repetir la regla.</summary>
+    public IReadOnlyList<EstadoOt> TransicionesPermitidas =>
+        Transiciones.TryGetValue(Estado, out var permitidos) ? permitidos : [];
+
     private OrdenTrabajo() { }
 
     /// <summary>RN-30, RN-31 y RN-35: genera la OT desde una fecha sin OT de un MP aprobado.</summary>
@@ -48,7 +52,7 @@ public class OrdenTrabajo
         if (fecha.TieneOt)
             throw DominioException.Conflicto("fecha.con-ot", "La fecha ya tiene una orden de trabajo.");
         if (mp.Estado != EstadoMp.Aprobado)
-            throw DominioException.Conflicto("mp.no-aprobado", $"El MP {mp.Codigo} no está aprobado.");
+            throw DominioException.Conflicto("mp.no-aprobado", $"El {mp.Codigo} no está aprobado.");
         if (numero <= 0)
             throw DominioException.Validacion("ot.numero-invalido", "El número de OT debe ser positivo.");
 

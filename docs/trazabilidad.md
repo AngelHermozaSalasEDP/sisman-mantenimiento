@@ -18,3 +18,17 @@ RF → Historia → Caso de uso → Reglas → Endpoint → Clase → Prueba. Se
 | RF-12 Exportar OT a Excel | HU-12 | — | RN-42 | GET /ordenes-trabajo/exportacion | — | — | Especificado; **fuera de la implementación** (doc. 31) |
 
 Los endpoints están definidos en `specs/technical/stack-y-endpoints.md` y `docs/api/openapi-borrador.yaml` (borrador v0.1, 2026-10-23). Arquitectura: `docs/arquitectura/` y ADR-003 a ADR-006. Todas las rutas llevan el prefijo `/api/v1`.
+
+## Web mínima de demostración (`Sisman.Mantenimiento.Web`)
+
+Plan: documento 33 del proyecto de modernización (decisiones D1 a D6 aprobadas el 2026-10-23). La web no tiene reglas propias: llama a la API y muestra sus respuestas.
+
+| Pantalla | Ruta | RF que usa | Página | Prueba |
+|---|---|---|---|---|
+| Login y salir | `/login`, `/logout` | RF-11 | `LoginModel`, `LogoutModel` | `WebTests` (sin sesión, credenciales inválidas, login, token vencido) |
+| Lista de MP | `/mp` | RF-02 | `Mp/IndexModel` | `WebTests` (lista con token) |
+| Detalle de MP, aprobar, programar fecha, generar OT | `/mp/{id}` | RF-02, RF-04, RF-05, RF-07 | `Mp/DetalleModel` | `WebTests` (botones por perfil, error de la API, antifalsificación) |
+| Lista de OT | `/ot` | RF-08 | `Ot/IndexModel` | Recorrido manual de la demo |
+| Detalle de OT y cambio de estado | `/ot/{id}` | RF-08, RF-09 | `Ot/DetalleModel` | Recorrido manual de la demo |
+
+El recorrido completo de la demo (21 comprobaciones, contra la API y la base reales) se ejecutó el 2026-10-23 con un script HTTP; está descrito en la evidencia de IA 013.

@@ -1,0 +1,32 @@
+@page "/login"
+@model LoginModel
+@{
+    ViewData["Title"] = "Iniciar sesión";
+}
+
+<section class="login">
+    <h1>SISMAN <span>Mantenimiento</span></h1>
+    <p class="nota">Mantenimiento preventivo, fechas programadas y órdenes de trabajo</p>
+
+    @if (Model.Vencida)
+    {
+        <div class="aviso error" role="alert">La sesión venció. Vuelva a iniciar sesión.</div>
+    }
+    @if (Model.Error is not null)
+    {
+        <div class="aviso error" role="alert">@Model.Error</div>
+    }
+
+    <form method="post">
+        <label asp-for="Usuario">Usuario</label>
+        <input asp-for="Usuario" autocomplete="username" autofocus />
+        <span asp-validation-for="Usuario" class="campo-error"></span>
+
+        <label asp-for="Clave">Clave</label>
+        <input asp-for="Clave" autocomplete="current-password" />
+        <span asp-validation-for="Clave" class="campo-error"></span>
+
+        <input type="hidden" asp-for="ReturnUrl" />
+        <button type="submit" class="boton">Ingresar</button>
+    </form>
+</section>

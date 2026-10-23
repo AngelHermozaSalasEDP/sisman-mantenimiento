@@ -1,0 +1,57 @@
+@page "/mp"
+@model Sisman.Mantenimiento.Web.Pages.Mp.IndexModel
+@{
+    ViewData["Title"] = "Mantenimientos preventivos";
+}
+
+<h1>Mantenimientos preventivos</h1>
+
+<form method="get" class="filtros">
+    <label>Código <input name="codigo" value="@Model.Codigo" placeholder="MP-0000001" maxlength="10" /></label>
+    <label>
+        Estado
+        <select name="estado">
+            <option value="">Todos</option>
+            @foreach (var e in new[] { "Nuevo", "Modificado", "Aprobado" })
+            {
+                <option value="@e" selected="@(Model.Estado == e)">@e</option>
+            }
+        </select>
+    </label>
+    <button type="submit" class="boton">Buscar</button>
+    <a href="/mp" class="boton secundario">Limpiar</a>
+</form>
+
+@if (Model.ErrorCarga is not null)
+{
+    <div class="aviso error" role="alert">@Model.ErrorCarga</div>
+}
+else if (Model.Resultado is { } r)
+{
+    <p class="nota">@r.Total mantenimientos · página @r.PaginaActual de @r.TotalPaginas</p>
+    <table>
+        <thead>
+            <tr><th>Código</th><th>Descripción</th><th>Frecuencia</th><th>Estado</th><th>Próxima fecha</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var mp in r.Items)
+            {
+                <tr>
+                    <td><a href="/mp/@mp.Id">@mp.Codigo</a></td>
+                    <td>@mp.Descripcion</td>
+                    <td>@Textos.Frecuencia(mp.Frecuencia) (@mp.ValorFrecuencia)</td>
+                    <td><span class="etiqueta @mp.Estado.ToLowerInvariant()">@mp.Estado</span></td>
+                    <td>@Textos.Fecha(mp.FechaProxima)</td>
+                </tr>
+            }
+            @if (r.Items.Count == 0)
+            {
+                <tr><td colspan="5" class="vacio">No hay mantenimientos con esos filtros.</td></tr>
+            }
+        </tbody>
+    </table>
+    <nav class="paginas">
+        @if (r.PaginaActual > 1) { <a href="@Model.Enlace(r.PaginaActual - 1)">‹ Anterior</a> }
+        @if (r.PaginaActual < r.TotalPaginas) { <a href="@Model.Enlace(r.PaginaActual + 1)">Siguiente ›</a> }
+    </nav>
+}

@@ -1,0 +1,41 @@
+﻿@{
+    var autenticado = User.Identity?.IsAuthenticated == true;
+    var ruta = Context.Request.Path.Value ?? "";
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] · SISMAN Mantenimiento</title>
+    <link rel="stylesheet" href="~/css/sitio.css" asp-append-version="true" />
+</head>
+<body>
+    @if (autenticado)
+    {
+        <header class="barra">
+            <a class="marca" href="/mp">SISMAN <span>Mantenimiento</span></a>
+            <nav>
+                <a href="/mp" class="@(ruta.StartsWith("/mp") ? "activo" : "")">Mantenimientos preventivos</a>
+                <a href="/ot" class="@(ruta.StartsWith("/ot") ? "activo" : "")">Órdenes de trabajo</a>
+            </nav>
+            <form method="post" action="/logout" class="sesion">
+                <span>@User.Identity!.Name · @(User.IsInRole("Planificador") ? "Planificador" : "Especialista")</span>
+                <button type="submit" class="boton secundario">Salir</button>
+                @Html.AntiForgeryToken()
+            </form>
+        </header>
+    }
+    <main class="contenido">
+        @if (TempData["Exito"] is string exito)
+        {
+            <div class="aviso exito" role="status">@exito</div>
+        }
+        @if (TempData["Error"] is string error)
+        {
+            <div class="aviso error" role="alert">@error</div>
+        }
+        @RenderBody()
+    </main>
+</body>
+</html>
