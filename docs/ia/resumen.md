@@ -1,6 +1,6 @@
 # Resumen del uso de IA
 
-Estado: **parcial** (6 evidencias registradas el 2026-10-22; se amplía con cada tarea).
+Estado: **parcial** (8 evidencias registradas; se amplía con cada tarea).
 
 | # | Entrada | Tipo | Resultado |
 |---|---|---|---|
@@ -10,6 +10,8 @@ Estado: **parcial** (6 evidencias registradas el 2026-10-22; se amplía con cada
 | 004 | Secreto en el historial de git | calidad y seguridad | Hallazgo aceptado; corrección pendiente |
 | 005 | Elegir EF Core frente a ADO.NET | arquitectura | Aceptado con ajuste |
 | 006 | Commit con archivos ajenos | control de cambios | Error reconocido |
+| 007 | Historias, casos de uso y reglas desde el análisis | documentación | Aceptado como borrador; 3 reglas a validar |
+| 008 | Modelo, C4, ADR-003 a 006, OpenAPI y specs técnicas | arquitectura | Aceptado como borrador; 3 puntos a revisar |
 
 ## Dónde ayudó la IA
 

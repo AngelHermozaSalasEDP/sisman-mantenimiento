@@ -21,19 +21,27 @@ SISMAN es el sistema con el que una editora gestiona el mantenimiento de su plan
 | Especialista de mantenimiento | Consulta las OT que le asignan y registra su avance |
 | Administrador técnico | Mantiene catálogos y accesos (fuera del alcance de esta API) |
 
-## Dentro del alcance
+## Dentro del alcance (se implementa)
 
-1. Mantenimiento preventivo: alta, consulta, edición y aprobación.
-2. Fechas programadas de un MP: alta y baja.
-3. Generación de órdenes de trabajo desde una fecha programada, con número único garantizado.
-4. Consulta de OT con filtros y paginación; cambio de estado.
-5. Calendario de MP programados (planning).
-6. Autenticación con JWT y manejo uniforme de errores.
-7. API documentada con OpenAPI; entorno local reproducible con Docker.
+Recorte confirmado el 2026-10-23 por el plazo de entrega (31/10/2026). Las especificaciones de los 12 RF se mantienen completas; se recorta el código, no las specs ni las pruebas.
 
-## Fuera del alcance (mejoras pendientes)
+1. Inicio de sesión con JWT y manejo uniforme de errores (RF-11).
+2. Consulta y edición de mantenimientos preventivos (RF-02, RF-03) y su aprobación (RF-04).
+3. Programar fechas de un MP (RF-05).
+4. Generar una OT desde una fecha programada, con número único garantizado por una transacción y probado con 20 solicitudes simultáneas (RF-07).
+5. Consulta paginada de OT y cambio de estado con las transiciones principales (RF-08, RF-09).
+6. API documentada con OpenAPI y entorno local reproducible (Docker Compose; plan B con SQL Server local).
 
-Reportes y exportaciones a PDF, rotativa, asignación y consumo de personal en la OT, informe de falla, plan de trabajo, seguridad compartida con otros sistemas, interfaz de usuario web, migración de datos del sistema original.
+## Fuera de la implementación (mejora pendiente, con especificación)
+
+| RF | Qué queda | Cómo se cubre en la entrega |
+|---|---|---|
+| RF-01 | Alta de MP | Los MP se cargan con datos de ejemplo (seed) |
+| RF-06 | Eliminar fecha programada | Solo especificado |
+| RF-10 | Planning | Solo especificado |
+| RF-12 | Exportación a Excel | Solo especificado |
+
+Fuera del módulo: reportes y exportaciones a PDF, rotativa, asignación y consumo de personal en la OT, informe de falla, plan de trabajo, seguridad compartida con otros sistemas, interfaz de usuario web, migración de datos del sistema original.
 
 ## Fuente de las reglas
 

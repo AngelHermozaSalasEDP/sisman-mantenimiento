@@ -1,0 +1,385 @@
+openapi: 3.0.3
+info:
+  title: SISMAN Mantenimiento API
+  version: 0.1.0-borrador
+  description: >
+    Flujo mantenimiento preventivo (MP) -> fecha programada -> orden de trabajo (OT).
+    Borrador del 2026-10-23; se exporta el definitivo desde Swagger en la Fase 7.
+    Todos los errores son application/problem+json (ADR-005).
+servers:
+  - url: http://localhost:8080/api/v1
+security:
+  - bearerAuth: []
+tags:
+  - name: Auth
+  - name: Mantenimientos preventivos
+  - name: Fechas programadas
+  - name: Ordenes de trabajo
+paths:
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Iniciar sesion (RF-11)
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/LoginSolicitud' }
+            example: { usuario: planificador, clave: "<clave de prueba del README>" }
+      responses:
+        '200':
+          description: Token de acceso (vence a los 30 minutos, RN-02)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/LoginRespuesta' }
+        '400': { $ref: '#/components/responses/Validacion' }
+        '401': { $ref: '#/components/responses/Error' }
+  /mantenimientos-preventivos:
+    get:
+      tags: [Mantenimientos preventivos]
+      summary: Consultar MP con filtros y paginacion (RF-02)
+      parameters:
+        - { name: codigo, in: query, schema: { type: string }, example: MP-0000001 }
+        - { name: tipoTrabajoId, in: query, schema: { type: integer } }
+        - { name: estado, in: query, schema: { $ref: '#/components/schemas/EstadoMp' } }
+        - { name: fechaDesde, in: query, schema: { type: string, format: date } }
+        - { name: fechaHasta, in: query, schema: { type: string, format: date } }
+        - { $ref: '#/components/parameters/Pagina' }
+        - { $ref: '#/components/parameters/TamanoPagina' }
+      responses:
+        '200':
+          description: Pagina de MP (RN-40)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PaginaMp' }
+        '401': { $ref: '#/components/responses/Error' }
+    post:
+      tags: [Mantenimientos preventivos]
+      summary: Registrar un MP (RF-01; especificado, fuera de la implementacion inicial)
+      description: Solo Planificador (RN-03). El codigo MP-nnnnnnn lo asigna el sistema (RN-10).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/MpEntrada' }
+      responses:
+        '201':
+          description: Creado
+          headers:
+            Location: { schema: { type: string } }
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Mp' }
+        '400': { $ref: '#/components/responses/Validacion' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+  /mantenimientos-preventivos/{id}:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: integer } }
+    get:
+      tags: [Mantenimientos preventivos]
+      summary: Detalle de un MP con sus fechas (RF-02)
+      responses:
+        '200':
+          description: MP
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Mp' }
+        '404': { $ref: '#/components/responses/Error' }
+    put:
+      tags: [Mantenimientos preventivos]
+      summary: Editar un MP (RF-03); lo deja en estado Modificado (RN-14)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/MpEntrada' }
+      responses:
+        '200':
+          description: MP actualizado
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Mp' }
+        '400': { $ref: '#/components/responses/Validacion' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+  /mantenimientos-preventivos/{id}/aprobacion:
+    post:
+      tags: [Mantenimientos preventivos]
+      summary: Aprobar un MP (RF-04)
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      responses:
+        '200':
+          description: MP aprobado
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Mp' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409':
+          description: El MP ya esta aprobado (mp.ya-aprobado, RN-15)
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problema' }
+  /mantenimientos-preventivos/{id}/fechas:
+    post:
+      tags: [Fechas programadas]
+      summary: Programar una fecha (RF-05)
+      description: Inicio posterior a hoy (RN-20) y no mayor que el fin (RN-21); MP aprobado (RN-22); sin repetir inicio (RN-23).
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/FechaEntrada' }
+            example: { fechaInicio: '2026-11-15', fechaFin: '2026-11-15' }
+      responses:
+        '201':
+          description: Fecha creada sin OT (RN-24)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Fecha' }
+        '400': { $ref: '#/components/responses/Validacion' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+  /mantenimientos-preventivos/{id}/fechas/{fechaId}:
+    delete:
+      tags: [Fechas programadas]
+      summary: Eliminar una fecha sin OT (RF-06; especificado, fuera de la implementacion inicial)
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+        - { name: fechaId, in: path, required: true, schema: { type: integer } }
+      responses:
+        '204': { description: Eliminada }
+        '404': { $ref: '#/components/responses/Error' }
+        '409':
+          description: La fecha ya tiene OT (fecha.con-ot, RN-25)
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problema' }
+  /fechas/{fechaId}/ordenes-trabajo:
+    post:
+      tags: [Ordenes de trabajo]
+      summary: Generar una OT desde una fecha programada (RF-07)
+      description: >
+        Toma el numero del correlativo, crea la OT y enlaza la fecha en una sola transaccion
+        (RN-33). Con 20 solicitudes simultaneas devuelve 20 numeros distintos (RN-34).
+      parameters:
+        - { name: fechaId, in: path, required: true, schema: { type: integer } }
+      responses:
+        '201':
+          description: OT creada (Alta, Pendiente, Preventivo, RN-31)
+          headers:
+            Location: { schema: { type: string } }
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Ot' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409':
+          description: La fecha ya tiene OT o el MP no esta aprobado (RN-30)
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problema' }
+  /ordenes-trabajo:
+    get:
+      tags: [Ordenes de trabajo]
+      summary: Consultar OT con filtros y paginacion en el servidor (RF-08)
+      parameters:
+        - { name: numero, in: query, schema: { type: integer } }
+        - { name: tipo, in: query, schema: { type: integer } }
+        - { name: estado, in: query, schema: { type: integer, enum: [37, 38, 39, 40, 41, 42] } }
+        - { name: fechaDesde, in: query, schema: { type: string, format: date } }
+        - { name: fechaHasta, in: query, schema: { type: string, format: date } }
+        - { $ref: '#/components/parameters/Pagina' }
+        - { $ref: '#/components/parameters/TamanoPagina' }
+      responses:
+        '200':
+          description: Pagina de OT ordenada por numero descendente (RN-41)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PaginaOt' }
+        '401': { $ref: '#/components/responses/Error' }
+  /ordenes-trabajo/{id}:
+    get:
+      tags: [Ordenes de trabajo]
+      summary: Detalle de una OT
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      responses:
+        '200':
+          description: OT con su historial de estados
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Ot' }
+        '404': { $ref: '#/components/responses/Error' }
+  /ordenes-trabajo/{id}/estado:
+    put:
+      tags: [Ordenes de trabajo]
+      summary: Cambiar el estado de una OT (RF-09)
+      description: Solo transiciones permitidas (RN-37); registra usuario y fecha (RN-38).
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CambioEstado' }
+            example: { estado: 41 }
+      responses:
+        '200':
+          description: OT con el estado nuevo
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Ot' }
+        '400': { $ref: '#/components/responses/Validacion' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409':
+          description: Transicion no permitida (ot.transicion-invalida)
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problema' }
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+  parameters:
+    Pagina: { name: pagina, in: query, schema: { type: integer, minimum: 1, default: 1 } }
+    TamanoPagina:
+      name: tamanoPagina
+      in: query
+      description: Por defecto 50, maximo 200 (RN-40)
+      schema: { type: integer, minimum: 1, maximum: 200, default: 50 }
+  responses:
+    Error:
+      description: Error (ProblemDetails, RFC 9457)
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problema' }
+    Validacion:
+      description: Entrada invalida (validacion.error)
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/ProblemaValidacion' }
+  schemas:
+    EstadoMp: { type: string, enum: [Nuevo, Modificado, Aprobado] }
+    LoginSolicitud:
+      type: object
+      required: [usuario, clave]
+      properties:
+        usuario: { type: string, maxLength: 50 }
+        clave: { type: string, maxLength: 100 }
+    LoginRespuesta:
+      type: object
+      properties:
+        token: { type: string }
+        venceEn: { type: string, format: date-time }
+        perfil: { type: string, enum: [Planificador, Especialista] }
+    MpEntrada:
+      type: object
+      required: [descripcion, maquinaId, tipoTrabajoId, fuenteId, oportunidadId, especialidadId, frecuencia, valorFrecuencia]
+      properties:
+        descripcion: { type: string, maxLength: 200 }
+        maquinaId: { type: integer }
+        sistemaId: { type: integer, nullable: true }
+        equipoId: { type: integer, nullable: true }
+        tipoTrabajoId: { type: integer }
+        fuenteId: { type: integer }
+        oportunidadId: { type: integer }
+        especialidadId: { type: integer }
+        frecuencia: { type: integer, enum: [1, 2, 3, 4], description: '1 Diario, 2 Semanal, 3 Mensual, 4 Anual (RN-12)' }
+        valorFrecuencia: { type: integer, minimum: 1 }
+        mes: { type: integer, minimum: 1, maximum: 12, nullable: true, description: 'Obligatorio si la frecuencia es 3 o 4 (RN-13)' }
+    Mp:
+      allOf:
+        - $ref: '#/components/schemas/MpEntrada'
+        - type: object
+          properties:
+            id: { type: integer }
+            codigo: { type: string, example: MP-0000001 }
+            estado: { $ref: '#/components/schemas/EstadoMp' }
+            fechaInicio: { type: string, format: date, nullable: true }
+            fechaProxima: { type: string, format: date, nullable: true }
+            fechaUltima: { type: string, format: date, nullable: true }
+            aprobadoPor: { type: string, nullable: true }
+            aprobadoEn: { type: string, format: date-time, nullable: true }
+            fechas:
+              type: array
+              items: { $ref: '#/components/schemas/Fecha' }
+    PaginaMp:
+      type: object
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/Mp' } }
+        pagina: { type: integer }
+        tamanoPagina: { type: integer }
+        total: { type: integer }
+    FechaEntrada:
+      type: object
+      required: [fechaInicio, fechaFin]
+      properties:
+        fechaInicio: { type: string, format: date }
+        fechaFin: { type: string, format: date }
+    Fecha:
+      type: object
+      properties:
+        id: { type: integer }
+        fechaInicio: { type: string, format: date }
+        fechaFin: { type: string, format: date }
+        numeroOt: { type: integer, nullable: true }
+    CambioEstado:
+      type: object
+      required: [estado]
+      properties:
+        estado: { type: integer, enum: [37, 38, 39, 40, 41, 42] }
+    Ot:
+      type: object
+      properties:
+        id: { type: integer }
+        numero: { type: integer }
+        tipo: { type: string, example: Preventivo }
+        prioridad: { type: string, example: Alta }
+        estado: { type: integer, enum: [37, 38, 39, 40, 41, 42] }
+        descripcion: { type: string }
+        mantenimientoPreventivoId: { type: integer }
+        fechaObjetivo: { type: string, format: date }
+        historial:
+          type: array
+          items:
+            type: object
+            properties:
+              estadoAnterior: { type: integer }
+              estadoNuevo: { type: integer }
+              usuario: { type: string }
+              fecha: { type: string, format: date-time }
+    PaginaOt:
+      type: object
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/Ot' } }
+        pagina: { type: integer }
+        tamanoPagina: { type: integer }
+        total: { type: integer }
+    Problema:
+      type: object
+      properties:
+        type: { type: string }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+        codigo: { type: string, example: ot.transicion-invalida }
+        traceId: { type: string }
+        correlationId: { type: string }
+    ProblemaValidacion:
+      allOf:
+        - $ref: '#/components/schemas/Problema'
+        - type: object
+          properties:
+            errors:
+              type: object
+              additionalProperties:
+                type: array
+                items: { type: string }
