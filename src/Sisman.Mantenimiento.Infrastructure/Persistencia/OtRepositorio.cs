@@ -51,6 +51,26 @@ public class OtRepositorio(SismanDbContext db) : IOtRepositorio
     public Task<OrdenTrabajo?> ObtenerAsync(int id, CancellationToken ct) =>
         db.OrdenesTrabajo.AsNoTracking().Include(o => o.Historial).FirstOrDefaultAsync(o => o.Id == id, ct);
 
+    public Task<OrdenTrabajo?> ObtenerParaModificarAsync(int id, CancellationToken ct) =>
+        db.OrdenesTrabajo.Include(o => o.Historial).FirstOrDefaultAsync(o => o.Id == id, ct);
+
+    public async Task<(IReadOnlyList<OrdenTrabajo> Items, int Total)> ConsultarAsync(FiltroOt f, CancellationToken ct)
+    {
+        var q = db.OrdenesTrabajo.AsNoTracking().AsQueryable();
+        if (f.Numero is not null) q = q.Where(o => o.Numero == f.Numero);
+        if (f.Tipo is not null) q = q.Where(o => o.Tipo == f.Tipo);
+        if (f.Estado is not null) q = q.Where(o => o.Estado == f.Estado);
+        if (f.FechaDesde is not null) q = q.Where(o => o.FechaObjetivo >= f.FechaDesde);
+        if (f.FechaHasta is not null) q = q.Where(o => o.FechaObjetivo <= f.FechaHasta);
+
+        var total = await q.CountAsync(ct);
+        // RN-41: el número es entero, así que el orden es numérico (el original ordenaba como texto).
+        var items = await q.OrderByDescending(o => o.Numero)
+            .Skip((f.Pagina - 1) * f.TamanoPagina).Take(f.TamanoPagina)
+            .ToListAsync(ct);
+        return (items, total);
+    }
+
     public async Task GuardarAsync(CancellationToken ct)
     {
         try

@@ -55,8 +55,17 @@ public interface IOtRepositorio
 
     Task<OrdenTrabajo?> ObtenerAsync(int id, CancellationToken ct);
 
+    /// <summary>Devuelve la OT con su historial, lista para modificarla (RF-09).</summary>
+    Task<OrdenTrabajo?> ObtenerParaModificarAsync(int id, CancellationToken ct);
+
+    Task<(IReadOnlyList<OrdenTrabajo> Items, int Total)> ConsultarAsync(FiltroOt filtro, CancellationToken ct);
+
     Task GuardarAsync(CancellationToken ct);
 }
+
+public record FiltroOt(
+    int? Numero, TipoOt? Tipo, EstadoOt? Estado, DateOnly? FechaDesde, DateOnly? FechaHasta,
+    int Pagina, int TamanoPagina);
 
 public interface IMpRepositorio
 {
