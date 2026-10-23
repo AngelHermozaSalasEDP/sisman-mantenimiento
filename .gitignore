@@ -10,6 +10,9 @@ publish/
 # Secretos y configuración local: solo se versiona el archivo de ejemplo
 appsettings*.json
 !appsettings.example.json
+# Configuración base sin secretos (las claves van en user-secrets o variables de entorno)
+!src/Sisman.Mantenimiento.Api/appsettings.json
+!src/Sisman.Mantenimiento.Web/appsettings.json
 .env
 *.pfx
 secrets.json
