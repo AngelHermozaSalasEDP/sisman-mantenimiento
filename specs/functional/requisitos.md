@@ -1,6 +1,6 @@
 # Requisitos del módulo
 
-Estado: **borrador v0.2** (historias en `historias.md`, casos de uso en `casos-de-uso.md` y reglas en `reglas.md`). Se congela al terminar la Fase 1. Lo que no esté aquí va a «mejoras pendientes».
+Estado: **v1.0, implementado** (2026-10-23): los 12 RF y los 6 RNF tienen código y pruebas; ver `docs/trazabilidad.md`. Antes: borrador v0.2 (historias en `historias.md`, casos de uso en `casos-de-uso.md` y reglas en `reglas.md`). Se congela al terminar la Fase 1. Lo que no esté aquí va a «mejoras pendientes».
 
 Origen de cada requisito: análisis del sistema original (`reglas-negocio`, `inventario-funcional`) y validación con un usuario real (2026-10-20). Se citan con la etiqueta **Origen**.
 

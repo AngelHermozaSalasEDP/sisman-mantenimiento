@@ -1,0 +1,1911 @@
+{
+  "openapi": "3.0.4",
+  "info": {
+    "title": "SISMAN Mantenimiento API",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginSolicitud"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginSolicitud"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginSolicitud"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginRespuesta"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogos": {
+      "get": {
+        "tags": [
+          "Consultas"
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogosDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/maquinas": {
+      "get": {
+        "tags": [
+          "Consultas"
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MaquinaResumen"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/planning": {
+      "get": {
+        "tags": [
+          "Consultas"
+        ],
+        "parameters": [
+          {
+            "name": "desde",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "hasta",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "plantaId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "areaId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "maquinaId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "especialidadId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanningDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/mantenimientos-preventivos": {
+      "post": {
+        "tags": [
+          "MantenimientosPreventivos"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MpEntrada"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MpEntrada"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MpEntrada"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MpDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "MantenimientosPreventivos"
+        ],
+        "parameters": [
+          {
+            "name": "codigo",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tipoTrabajoId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "estado",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/EstadoMp"
+            }
+          },
+          {
+            "name": "fechaDesde",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "fechaHasta",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "pagina",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "tamanoPagina",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MpDtoPagina"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/mantenimientos-preventivos/{id}/fechas/{fechaId}": {
+      "delete": {
+        "tags": [
+          "MantenimientosPreventivos"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "fechaId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/mantenimientos-preventivos/{id}": {
+      "get": {
+        "tags": [
+          "MantenimientosPreventivos"
+        ],
+        "operationId": "Obtener",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MpDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "MantenimientosPreventivos"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MpEntrada"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MpEntrada"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MpEntrada"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MpDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/mantenimientos-preventivos/{id}/aprobacion": {
+      "post": {
+        "tags": [
+          "MantenimientosPreventivos"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MpDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/mantenimientos-preventivos/{id}/fechas": {
+      "post": {
+        "tags": [
+          "MantenimientosPreventivos"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FechaEntrada"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FechaEntrada"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FechaEntrada"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FechaDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fechas/{fechaId}/ordenes-trabajo": {
+      "post": {
+        "tags": [
+          "OrdenesTrabajo"
+        ],
+        "parameters": [
+          {
+            "name": "fechaId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OtDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ordenes-trabajo": {
+      "get": {
+        "tags": [
+          "OrdenesTrabajo"
+        ],
+        "parameters": [
+          {
+            "name": "numero",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "tipo",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/TipoOt"
+            }
+          },
+          {
+            "name": "estado",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "fechaDesde",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "fechaHasta",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "pagina",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "tamanoPagina",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OtDtoPagina"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ordenes-trabajo/exportacion": {
+      "get": {
+        "tags": [
+          "OrdenesTrabajo"
+        ],
+        "parameters": [
+          {
+            "name": "numero",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "tipo",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/TipoOt"
+            }
+          },
+          {
+            "name": "estado",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "fechaDesde",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "fechaHasta",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ordenes-trabajo/{id}": {
+      "get": {
+        "tags": [
+          "OrdenesTrabajo"
+        ],
+        "operationId": "ObtenerOt",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OtDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ordenes-trabajo/{id}/estado": {
+      "put": {
+        "tags": [
+          "OrdenesTrabajo"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CambioEstadoEntrada"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CambioEstadoEntrada"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CambioEstadoEntrada"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OtDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CambioEstadoEntrada": {
+        "type": "object",
+        "properties": {
+          "estado": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CatalogoDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "categoria": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CatalogosDto": {
+        "type": "object",
+        "properties": {
+          "tiposTrabajo": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CatalogoDto"
+            },
+            "nullable": true
+          },
+          "fuentes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CatalogoDto"
+            },
+            "nullable": true
+          },
+          "oportunidades": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CatalogoDto"
+            },
+            "nullable": true
+          },
+          "especialidades": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CatalogoDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DiaPlanningDto": {
+        "type": "object",
+        "properties": {
+          "dia": {
+            "type": "string",
+            "format": "date"
+          },
+          "cantidad": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EquipoResumen": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EstadoMp": {
+        "enum": [
+          "Nuevo",
+          "Modificado",
+          "Aprobado"
+        ],
+        "type": "string"
+      },
+      "FechaDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fechaInicio": {
+            "type": "string",
+            "format": "date"
+          },
+          "fechaFin": {
+            "type": "string",
+            "format": "date"
+          },
+          "numeroOt": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FechaEntrada": {
+        "type": "object",
+        "properties": {
+          "fechaInicio": {
+            "type": "string",
+            "format": "date"
+          },
+          "fechaFin": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "additionalProperties": false
+      },
+      "HistorialDto": {
+        "type": "object",
+        "properties": {
+          "estadoAnterior": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "estadoNuevo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "usuario": {
+            "type": "string",
+            "nullable": true
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoginRespuesta": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "nullable": true
+          },
+          "venceEn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "perfil": {
+            "$ref": "#/components/schemas/Perfil"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoginSolicitud": {
+        "type": "object",
+        "properties": {
+          "usuario": {
+            "type": "string",
+            "nullable": true
+          },
+          "clave": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MaquinaResumen": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "codigo": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "areaId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "area": {
+            "type": "string",
+            "nullable": true
+          },
+          "plantaId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "planta": {
+            "type": "string",
+            "nullable": true
+          },
+          "sistemas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SistemaResumen"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MpDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "codigo": {
+            "type": "string",
+            "nullable": true
+          },
+          "estado": {
+            "type": "string",
+            "nullable": true
+          },
+          "descripcion": {
+            "type": "string",
+            "nullable": true
+          },
+          "maquinaId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sistemaId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "equipoId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "tipoTrabajoId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fuenteId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "oportunidadId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "especialidadId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "frecuencia": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "valorFrecuencia": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mes": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "fechaInicio": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "fechaProxima": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "fechaUltima": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "modificadoPor": {
+            "type": "string",
+            "nullable": true
+          },
+          "modificadoEn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "aprobadoPor": {
+            "type": "string",
+            "nullable": true
+          },
+          "aprobadoEn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "fechas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FechaDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MpDtoPagina": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MpDto"
+            },
+            "nullable": true
+          },
+          "paginaActual": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tamanoPagina": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MpEntrada": {
+        "type": "object",
+        "properties": {
+          "descripcion": {
+            "type": "string",
+            "nullable": true
+          },
+          "maquinaId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sistemaId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "equipoId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "tipoTrabajoId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fuenteId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "oportunidadId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "especialidadId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "frecuencia": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "valorFrecuencia": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mes": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OtDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numero": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tipo": {
+            "type": "string",
+            "nullable": true
+          },
+          "prioridad": {
+            "type": "string",
+            "nullable": true
+          },
+          "estado": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "descripcion": {
+            "type": "string",
+            "nullable": true
+          },
+          "maquinaId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sistemaId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "equipoId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "tipoTrabajoId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fuenteId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "oportunidadId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "especialidadId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mantenimientoPreventivoId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fechaObjetivo": {
+            "type": "string",
+            "format": "date"
+          },
+          "creadoPor": {
+            "type": "string",
+            "nullable": true
+          },
+          "creadoEn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "modificadoPor": {
+            "type": "string",
+            "nullable": true
+          },
+          "modificadoEn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "transicionesPermitidas": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "historial": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HistorialDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OtDtoPagina": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OtDto"
+            },
+            "nullable": true
+          },
+          "paginaActual": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tamanoPagina": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Perfil": {
+        "enum": [
+          "Planificador",
+          "Especialista"
+        ],
+        "type": "string"
+      },
+      "PlanningDto": {
+        "type": "object",
+        "properties": {
+          "desde": {
+            "type": "string",
+            "format": "date"
+          },
+          "hasta": {
+            "type": "string",
+            "format": "date"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dias": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiaPlanningDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
+      "SistemaResumen": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "equipos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EquipoResumen"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TipoOt": {
+        "enum": [
+          "Preventivo"
+        ],
+        "type": "string"
+      },
+      "ValidationProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "Token obtenido en POST /api/v1/auth/login",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth"
+    },
+    {
+      "name": "Consultas"
+    },
+    {
+      "name": "MantenimientosPreventivos"
+    },
+    {
+      "name": "OrdenesTrabajo"
+    }
+  ]
+}

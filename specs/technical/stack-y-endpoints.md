@@ -1,6 +1,6 @@
 # Especificación técnica: stack, endpoints y errores
 
-Estado: **borrador v0.1** (2026-10-23). Contrato completo: `docs/api/openapi-borrador.yaml`. Decisiones: ADR-001 a ADR-006. Modelo de datos: `docs/arquitectura/modelo.md`.
+Estado: **v1.0** (2026-10-23). Contrato definitivo exportado de Swagger: `docs/api/openapi.json` (el borrador `openapi-borrador.yaml` queda como historia). Decisiones: ADR-001 a ADR-006. Modelo de datos: `docs/arquitectura/modelo.md`.
 
 ## 1. Stack
 
@@ -32,21 +32,23 @@ Plan B mientras Docker no esté instalado: SQL Server local; la cadena de conexi
 | RF | Método y ruta | Perfil | Éxito | Errores | Reglas | En la implementación |
 |---|---|---|---|---|---|---|
 | RF-11 | `POST /auth/login` | público | 200 | 400, 401 | RN-01 a RN-03 | Sí |
-| RF-01 | `POST /mantenimientos-preventivos` | Planificador | 201 | 400, 401, 403 | RN-10 a RN-13 | **No** (MP de ejemplo en el seed) |
+| RF-01 | `POST /mantenimientos-preventivos` | Planificador | 201 | 400, 401, 403 | RN-10 a RN-13 | Sí |
 | RF-02 | `GET /mantenimientos-preventivos` | ambos | 200 | 400, 401 | RN-40, RN-42 | Sí |
 | RF-02 | `GET /mantenimientos-preventivos/{id}` | ambos | 200 | 401, 404 | — | Sí |
 | RF-03 | `PUT /mantenimientos-preventivos/{id}` | Planificador | 200 | 400, 401, 403, 404, 409 | RN-14 | Sí |
 | RF-04 | `POST /mantenimientos-preventivos/{id}/aprobacion` | Planificador | 200 | 401, 403, 404, 409 | RN-15, RN-16 | Sí |
 | RF-05 | `POST /mantenimientos-preventivos/{id}/fechas` | Planificador | 201 | 400, 401, 403, 404, 409 | RN-20 a RN-24 | Sí |
-| RF-06 | `DELETE /mantenimientos-preventivos/{id}/fechas/{fechaId}` | Planificador | 204 | 401, 403, 404, 409 | RN-25 | **No** |
+| RF-06 | `DELETE /mantenimientos-preventivos/{id}/fechas/{fechaId}` | Planificador | 204 | 401, 403, 404, 409 | RN-25 | Sí |
 | RF-07 | `POST /fechas/{fechaId}/ordenes-trabajo` | Planificador | 201 | 401, 403, 404, 409 | RN-30 a RN-35 | Sí |
 | RF-08 | `GET /ordenes-trabajo` | ambos | 200 | 400, 401 | RN-40 a RN-42 | Sí |
 | RF-08 | `GET /ordenes-trabajo/{id}` | ambos | 200 | 401, 404 | RN-38 | Sí |
-| RF-09 | `PUT /ordenes-trabajo/{id}/estado` | Planificador | 200 | 400, 401, 403, 404, 409 | RN-36 a RN-38 | Sí (transiciones principales) |
-| RF-10 | `GET /planning` | ambos | 200 | 400, 401 | RN-43 | **No** |
-| RF-12 | `GET /ordenes-trabajo/exportacion` | Planificador | 200 (xlsx) | 401, 403 | RN-42 | **No** |
+| RF-09 | `PUT /ordenes-trabajo/{id}/estado` | Planificador | 200 | 400, 401, 403, 404, 409 | RN-36 a RN-38 | Sí (todas las de RN-37) |
+| RF-10 | `GET /planning` | ambos | 200 | 400, 401 | RN-43 | Sí |
+| RF-12 | `GET /ordenes-trabajo/exportacion` | Planificador | 200 (xlsx) | 401, 403 | RN-42 | Sí |
+| RF-01, RF-03 | `GET /catalogos` | ambos | 200 | 401 | RN-11 | Sí |
+| RF-01, RF-03 | `GET /maquinas` | ambos | 200 | 401 | RN-11 | Sí |
 
-La columna «En la implementación» sigue el recorte del documento 31 del proyecto de modernización: lo que no se implementa conserva su especificación completa. `GET /planning` y la exportación se describen en el OpenAPI definitivo solo si se implementan.
+Todos los RF quedaron implementados el 2026-10-23 (documento 31 v1.2). Límites: el planning admite hasta 92 días por consulta y la exportación hasta 10 000 filas.
 
 ## 4. Transiciones de estado de la OT (RN-37, a validar)
 
@@ -59,7 +61,7 @@ La columna «En la implementación» sigue el recorte del documento 31 del proye
 | 41 Concluido | 40 Pendiente (reapertura) |
 | 42 Concluido por anulación | ninguna |
 
-Toda otra combinación responde 409 `ot.transicion-invalida`. La OT que genera RF-07 nace en 40 Pendiente. Si el 27/10 RF-07 no está cerrado, RF-09 se limita a 40 → 41 y 40 → 38.
+Toda otra combinación responde 409 `ot.transicion-invalida`. La OT que genera RF-07 nace en 40 Pendiente. El detalle de la OT incluye `transicionesPermitidas`, calculadas por el dominio.
 
 ## 5. Errores
 

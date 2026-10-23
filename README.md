@@ -2,13 +2,32 @@
 
 Proyecto integrador del curso *Agentic Software Development (.NET 10)*. Es el módulo central de la modernización del sistema SISMAN (gestión de mantenimiento de una editora): **mantenimiento preventivo (MP) → fecha programada → orden de trabajo (OT)**.
 
-> **Estado (2026-10-23):** implementados RF-11 (login con JWT), RF-02 a RF-05 (mantenimiento preventivo y fechas), RF-07 (OT con número transaccional, probado con 20 solicitudes simultáneas), RF-08 y RF-09 (consulta y estado de OT), y la web mínima de demostración. 92 pruebas en verde. Fuera de la implementación, con especificación: RF-01, RF-06, RF-10 y RF-12. Ver la [matriz de trazabilidad](docs/trazabilidad.md).
+> **Estado (2026-10-23):** los 12 requisitos funcionales y los 6 no funcionales están implementados y probados: API REST (16 operaciones) y web de demostración. 119 pruebas en verde; 0 advertencias. Ver la [matriz de trazabilidad](docs/trazabilidad.md) y el [informe de calidad](docs/calidad.md).
 
 ## Alcance
 
 Un módulo acotado. Ver [`docs/alcance.md`](docs/alcance.md). Lo que queda fuera (reportes, rotativa, seguridad compartida, resto de pantallas) está listado como mejoras pendientes.
 
-## Stack previsto
+## Funciones
+
+| RF | Función | API | Web |
+|---|---|---|---|
+| RF-11 | Iniciar sesión (JWT, dos perfiles) | `POST /api/v1/auth/login` | `/login` |
+| RF-01 | Registrar un MP con código `MP-nnnnnnn` | `POST /api/v1/mantenimientos-preventivos` | `/mp/nuevo` |
+| RF-02 | Consultar MP con filtros y paginación | `GET /api/v1/mantenimientos-preventivos` | `/mp` |
+| RF-03 | Editar un MP | `PUT /api/v1/mantenimientos-preventivos/{id}` | `/mp/editar/{id}` |
+| RF-04 | Aprobar un MP | `POST …/{id}/aprobacion` | `/mp/{id}` |
+| RF-05 | Programar una fecha | `POST …/{id}/fechas` | `/mp/{id}` |
+| RF-06 | Eliminar una fecha sin OT | `DELETE …/{id}/fechas/{fechaId}` | `/mp/{id}` |
+| RF-07 | Generar una OT con número transaccional | `POST /api/v1/fechas/{id}/ordenes-trabajo` | `/mp/{id}` |
+| RF-08 | Consultar OT con filtros y paginación | `GET /api/v1/ordenes-trabajo` | `/ot` |
+| RF-09 | Cambiar el estado de una OT | `PUT /api/v1/ordenes-trabajo/{id}/estado` | `/ot/{id}` |
+| RF-10 | Planning por día | `GET /api/v1/planning` | `/planning` |
+| RF-12 | Exportar OT a Excel | `GET /api/v1/ordenes-trabajo/exportacion` | `/ot` (Exportar a Excel) |
+
+Contrato completo: [`docs/api/openapi.json`](docs/api/openapi.json). Peticiones de ejemplo: [`docs/api/sisman.http`](docs/api/sisman.http).
+
+## Stack
 
 | Capa | Tecnología |
 |---|---|
@@ -18,7 +37,7 @@ Un módulo acotado. Ver [`docs/alcance.md`](docs/alcance.md). Lo que queda fuera
 | Validación y errores | FluentValidation, ProblemDetails |
 | Autenticación | JWT |
 | Documentación de la API | OpenAPI / Swagger |
-| Pruebas | xUnit, `WebApplicationFactory` |
+| Pruebas | xUnit, `WebApplicationFactory` (119 pruebas) |
 | Entorno local | Docker Compose (SQL Server) |
 
 ## Estructura
@@ -91,6 +110,8 @@ Registro en [`docs/ia/`](docs/ia/). Cada entrada indica el prompt, la respuesta 
 - [Requisitos funcionales y no funcionales](specs/functional/requisitos.md)
 - [Historias de usuario](specs/functional/historias.md) · [Casos de uso](specs/functional/casos-de-uso.md) · [Reglas de negocio](specs/functional/reglas.md)
 - [Plan de trabajo](docs/plan-de-trabajo.md)
+- [Documento técnico](docs/documento-tecnico.md) · [Informe de calidad](docs/calidad.md)
+- [Arquitectura: modelo y C4](docs/arquitectura/)
 - [Matriz de trazabilidad](docs/trazabilidad.md)
 - [Convenciones de commits y trabajo](docs/convenciones.md)
 - [Decisiones de arquitectura](docs/adr/)
