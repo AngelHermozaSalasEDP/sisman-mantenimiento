@@ -111,6 +111,7 @@ Registro en [`docs/ia/`](docs/ia/). Cada entrada indica el prompt, la respuesta 
 - [Historias de usuario](specs/functional/historias.md) · [Casos de uso](specs/functional/casos-de-uso.md) · [Reglas de negocio](specs/functional/reglas.md)
 - [Plan de trabajo](docs/plan-de-trabajo.md)
 - [Documento técnico](docs/documento-tecnico.md) · [Informe de calidad](docs/calidad.md)
+- [Manual de usuario por perfiles, con pantallas](docs/manual/manual-usuario.md)
 - [Arquitectura: modelo y C4](docs/arquitectura/)
 - [Matriz de trazabilidad](docs/trazabilidad.md)
 - [Convenciones de commits y trabajo](docs/convenciones.md)
