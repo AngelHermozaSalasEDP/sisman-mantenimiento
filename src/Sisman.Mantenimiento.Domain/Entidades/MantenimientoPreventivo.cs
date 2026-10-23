@@ -89,6 +89,19 @@ public class MantenimientoPreventivo
         return fecha;
     }
 
+    /// <summary>
+    /// RN-25: quita una fecha que todavía no tiene OT. Las fechas de inicio, próxima y última del MP no se
+    /// recalculan (el sistema original no lo hacía y la especificación no lo pide).
+    /// </summary>
+    public FechaProgramada QuitarFecha(int fechaId)
+    {
+        var fecha = _fechas.FirstOrDefault(f => f.Id == fechaId)
+            ?? throw DominioException.NoEncontrado("fecha.no-encontrada", $"El {Codigo} no tiene la fecha programada {fechaId}.");
+        fecha.ValidarEliminable();
+        _fechas.Remove(fecha);
+        return fecha;
+    }
+
     private void Asignar(DatosMp d)
     {
         if (string.IsNullOrWhiteSpace(d.Descripcion) || d.Descripcion.Length > 200)

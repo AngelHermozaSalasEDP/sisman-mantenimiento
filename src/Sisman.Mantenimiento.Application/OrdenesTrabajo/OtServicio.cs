@@ -59,6 +59,8 @@ public class FiltroOtValidator : AbstractValidator<FiltroOt>
 /// <summary>RF-07 (generar), RF-08 (consultar) y RF-09 (cambiar estado) sobre la orden de trabajo.</summary>
 public class OtServicio(
     IOtRepositorio repositorio,
+    ITransacciones transacciones,
+    IExportadorOt exportador,
     IReloj reloj,
     IUsuarioActual usuario,
     IValidator<FiltroOt> validaFiltro,
@@ -66,12 +68,15 @@ public class OtServicio(
 {
     public const string CorrelativoOt = "OT";
 
+    /// <summary>Límite de filas del Excel (RF-12): con más, se pide afinar los filtros.</summary>
+    public const int MaximoExportacion = 10_000;
+
     /// <summary>
     /// RN-30 a RN-35. Tomar el número, crear la OT, avanzar el correlativo y enlazar la fecha ocurre en una
     /// sola transacción: dos solicitudes a la vez reciben números distintos, y una falla no deja nada a medias.
     /// </summary>
     public Task<OtDto> GenerarAsync(int fechaId, CancellationToken ct) =>
-        repositorio.EnTransaccionAsync(async t =>
+        transacciones.EnTransaccionAsync(async t =>
         {
             var fecha = await repositorio.ObtenerFechaParaGenerarAsync(fechaId, t)
                 ?? throw DominioException.NoEncontrado("fecha.no-encontrada", $"No existe la fecha programada {fechaId}.");
@@ -81,7 +86,7 @@ public class OtServicio(
             if (fecha.TieneOt)
                 throw DominioException.Conflicto("fecha.con-ot", "La fecha ya tiene una orden de trabajo.");
 
-            var numero = await repositorio.SiguienteNumeroAsync(CorrelativoOt, t);
+            var numero = await transacciones.SiguienteNumeroAsync(CorrelativoOt, t);
             var ot = OrdenTrabajo.Generar(mp, fecha, numero, usuario.Nombre, reloj.UtcAhora);
             repositorio.Agregar(ot);
             await repositorio.GuardarAsync(t);
@@ -97,6 +102,17 @@ public class OtServicio(
         await validaFiltro.ValidateAndThrowAsync(filtro, ct);
         var (items, total) = await repositorio.ConsultarAsync(filtro, ct);
         return new Pagina<OtDto>(items.Select(o => OtDto.Desde(o, conHistorial: false)).ToList(), filtro.Pagina, filtro.TamanoPagina, total);
+    }
+
+    /// <summary>RF-12: Excel con todas las OT del filtro (sin paginar), en el mismo orden que la consulta.</summary>
+    public async Task<byte[]> ExportarAsync(FiltroOt filtro, CancellationToken ct)
+    {
+        await validaFiltro.ValidateAndThrowAsync(filtro with { Pagina = 1, TamanoPagina = 1 }, ct);
+        var ordenes = await repositorio.ConsultarParaExportarAsync(filtro, MaximoExportacion + 1, ct);
+        if (ordenes.Count > MaximoExportacion)
+            throw DominioException.Validacion("exportacion.demasiadas-filas",
+                $"La exportación supera las {MaximoExportacion:N0} órdenes. Afine los filtros (estado o rango de fechas).");
+        return exportador.Exportar(ordenes);
     }
 
     /// <summary>RF-09 (RN-37, RN-38): aplica una transición permitida y la registra en el historial.</summary>

@@ -33,14 +33,9 @@ Recorte confirmado el 2026-10-23 por el plazo de entrega (31/10/2026). Las espec
 6. API documentada con OpenAPI y entorno local reproducible (Docker Compose; plan B con SQL Server local).
 7. **Web mínima de demostración** (proyecto `Sisman.Mantenimiento.Web`, añadida el 2026-10-23): login, lista de MP, programar fecha, generar OT, lista de OT y cambio de estado. Se construye después de RF-08 y RF-09 y se reduce u omite si el plazo lo exige.
 
-## Fuera de la implementación (mejora pendiente, con especificación)
+## Ampliación del 2026-10-23
 
-| RF | Qué queda | Cómo se cubre en la entrega |
-|---|---|---|
-| RF-01 | Alta de MP | Los MP se cargan con datos de ejemplo (seed) |
-| RF-06 | Eliminar fecha programada | Solo especificado |
-| RF-10 | Planning | Solo especificado |
-| RF-12 | Exportación a Excel | Solo especificado |
+El responsable pidió completar todas las opciones del módulo: RF-01 (alta de MP, con catálogos), RF-06 (eliminar fecha), RF-10 (planning) y RF-12 (exportación a Excel) vuelven al alcance, junto con el alta y la edición de MP en la web. Orden de recorte si el plazo aprieta: RF-10, RF-12 y el alta en la web.
 
 Fuera del módulo: reportes y exportaciones a PDF, rotativa, asignación y consumo de personal en la OT, informe de falla, plan de trabajo, seguridad compartida con otros sistemas, interfaz de usuario completa (solo hay la web mínima de demostración), migración de datos del sistema original.
 

@@ -83,7 +83,7 @@ public class OrdenTrabajo
     public void CambiarEstado(EstadoOt nuevo, string usuario, DateTime ahora)
     {
         if (!Transiciones.TryGetValue(Estado, out var permitidos) || !permitidos.Contains(nuevo))
-            throw DominioException.Conflicto("ot.transicion-invalida", $"No se puede pasar de {Estado} a {nuevo}.");
+            throw DominioException.Conflicto("ot.transicion-invalida", $"No se puede pasar de «{NombresEstado.De(Estado)}» a «{NombresEstado.De(nuevo)}».");
 
         _historial.Add(new OrdenTrabajoHistorial(this, Estado, nuevo, usuario, ahora));
         Estado = nuevo;

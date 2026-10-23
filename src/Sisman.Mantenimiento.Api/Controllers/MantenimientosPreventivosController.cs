@@ -13,6 +13,31 @@ namespace Sisman.Mantenimiento.Api.Controllers;
 [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized, "application/problem+json")]
 public class MantenimientosPreventivosController(MpServicio servicio) : ControllerBase
 {
+    /// <summary>Registra un MP en estado Nuevo con código correlativo MP-nnnnnnn (RF-01, RN-10 a RN-13). Solo Planificador.</summary>
+    [HttpPost]
+    [Authorize(Policy = Politicas.Planificador)]
+    [ProducesResponseType<MpDto>(StatusCodes.Status201Created)]
+    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status403Forbidden, "application/problem+json")]
+    public async Task<ActionResult<MpDto>> Crear(MpEntrada entrada, CancellationToken ct)
+    {
+        var mp = await servicio.CrearAsync(entrada, ct);
+        return CreatedAtRoute(nameof(Obtener), new { id = mp.Id }, mp);
+    }
+
+    /// <summary>Elimina una fecha programada que todavía no tiene OT (RF-06, RN-25). Solo Planificador.</summary>
+    [HttpDelete("{id:int}/fechas/{fechaId:int}")]
+    [Authorize(Policy = Politicas.Planificador)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status403Forbidden, "application/problem+json")]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status409Conflict, "application/problem+json")]
+    public async Task<IActionResult> EliminarFecha(int id, int fechaId, CancellationToken ct)
+    {
+        await servicio.EliminarFechaAsync(id, fechaId, ct);
+        return NoContent();
+    }
+
     /// <summary>Consulta MP con filtros y paginación (RF-02). Por defecto 50 por página, máximo 200 (RN-40).</summary>
     [HttpGet]
     [Authorize(Policy = Politicas.Consulta)]

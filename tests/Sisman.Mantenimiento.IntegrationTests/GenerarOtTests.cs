@@ -179,7 +179,7 @@ public class GenerarOtTests(ApiFactory fabrica) : IClassFixture<ApiFactory>
         var antes = await CorrelativoAsync();
         using (var scope = fabrica.Services.CreateScope())
         {
-            var repo = scope.ServiceProvider.GetRequiredService<IOtRepositorio>();
+            var repo = scope.ServiceProvider.GetRequiredService<ITransacciones>();
             await Assert.ThrowsAsync<InvalidOperationException>(() => repo.EnTransaccionAsync<int>(async ct =>
             {
                 var numero = await repo.SiguienteNumeroAsync("OT", ct);

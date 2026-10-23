@@ -28,6 +28,10 @@ public static class DependencyInjection
         services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
         services.AddScoped<IMpRepositorio, MpRepositorio>();
         services.AddScoped<IOtRepositorio, OtRepositorio>();
+        services.AddScoped<ITransacciones, Transacciones>();
+        services.AddScoped<ICatalogoRepositorio, CatalogoRepositorio>();
+        services.AddScoped<IPlanningRepositorio, PlanningRepositorio>();
+        services.AddSingleton<IExportadorOt, Exportacion.ExportadorOtExcel>();
         services.AddScoped<SemillaDatos>();
         return services;
     }

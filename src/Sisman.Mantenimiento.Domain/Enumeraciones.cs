@@ -15,6 +15,20 @@ public enum EstadoOt : byte
     ConcluidoPorAnulacion = 42
 }
 
+public static class NombresEstado
+{
+    public static string De(EstadoOt e) => e switch
+    {
+        EstadoOt.Solicitud => "Solicitud",
+        EstadoOt.Anulacion => "Anulación",
+        EstadoOt.EnProgramacion => "En programación",
+        EstadoOt.Pendiente => "Pendiente",
+        EstadoOt.Concluido => "Concluido",
+        EstadoOt.ConcluidoPorAnulacion => "Concluido por anulación",
+        _ => ((int)e).ToString()
+    };
+}
+
 public enum TipoOt : byte { Preventivo = 1 }
 
 public enum PrioridadOt : byte { Alta = 1 }

@@ -45,6 +45,10 @@ public class MpRepositorio(SismanDbContext db) : IMpRepositorio
         await ExigirCatalogoAsync(d.EspecialidadId, CategoriaCatalogo.Especialidad, "la especialidad", ct);
     }
 
+    public void Agregar(MantenimientoPreventivo mp) => db.MantenimientosPreventivos.Add(mp);
+
+    public void EliminarFecha(FechaProgramada fecha) => db.FechasProgramadas.Remove(fecha);
+
     public async Task GuardarAsync(CancellationToken ct)
     {
         try

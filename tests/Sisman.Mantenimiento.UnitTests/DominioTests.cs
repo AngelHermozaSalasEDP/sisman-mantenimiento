@@ -168,4 +168,22 @@ public class DominioTests
         Assert.Equal((EstadoOt.Pendiente, EstadoOt.Concluido, "luis", Ahora.AddDays(1)),
             (h.EstadoAnterior, h.EstadoNuevo, h.Usuario, h.Fecha));
     }
+
+    [Fact(DisplayName = "RN-25: quitar una fecha sin OT la saca del MP; una inexistente da no encontrada")]
+    public void Quitar_Fecha()
+    {
+        var mp = MpAprobado();
+        mp.ProgramarFecha(Hoy.AddDays(3), Hoy.AddDays(3), Hoy, "ana", Ahora);
+        var f = mp.Fechas.Single();
+        Assert.Same(f, mp.QuitarFecha(f.Id));
+        Assert.Empty(mp.Fechas);
+        Assert.Equal("fecha.no-encontrada", Codigo(() => mp.QuitarFecha(12345)));
+    }
+
+    [Fact(DisplayName = "RN-37: el mensaje de transición prohibida usa nombres legibles")]
+    public void Mensaje_De_Transicion_Legible()
+    {
+        var ex = Assert.Throws<DominioException>(() => OtPendiente().CambiarEstado(EstadoOt.EnProgramacion, "luis", Ahora));
+        Assert.Equal("No se puede pasar de «Pendiente» a «En programación».", ex.Message);
+    }
 }

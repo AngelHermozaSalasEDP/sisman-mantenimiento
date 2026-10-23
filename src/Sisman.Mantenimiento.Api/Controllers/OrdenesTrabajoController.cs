@@ -45,6 +45,25 @@ public class OrdenesTrabajoController(OtServicio servicio) : ControllerBase
         Ok(await servicio.ConsultarAsync(
             new FiltroOt(numero, tipo, (EstadoOt?)estado, fechaDesde, fechaHasta, pagina, tamanoPagina), ct));
 
+    /// <summary>
+    /// Exporta a Excel las OT del filtro, sin paginar (RF-12). Mismos filtros que la consulta; hasta 10 000 filas.
+    /// Solo Planificador.
+    /// </summary>
+    [HttpGet("ordenes-trabajo/exportacion")]
+    [Authorize(Policy = Politicas.Planificador)]
+    [Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/problem+json")]
+    [ProducesResponseType<FileContentResult>(StatusCodes.Status200OK, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")]
+    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status403Forbidden, "application/problem+json")]
+    public async Task<IActionResult> Exportar(
+        [FromQuery] int? numero, [FromQuery] TipoOt? tipo, [FromQuery] int? estado,
+        [FromQuery] DateOnly? fechaDesde, [FromQuery] DateOnly? fechaHasta, CancellationToken ct)
+    {
+        var archivo = await servicio.ExportarAsync(new FiltroOt(numero, tipo, (EstadoOt?)estado, fechaDesde, fechaHasta, 1, 1), ct);
+        return File(archivo, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            $"ordenes-trabajo-{DateTime.Now:yyyyMMdd-HHmm}.xlsx");
+    }
+
     /// <summary>Detalle de una OT con su historial de estados.</summary>
     [HttpGet("ordenes-trabajo/{id:int}", Name = nameof(ObtenerOt))]
     [Authorize(Policy = Politicas.Consulta)]
