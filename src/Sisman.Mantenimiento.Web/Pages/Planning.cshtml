@@ -1,0 +1,86 @@
+@page "/planning"
+@model PlanningModel
+@{
+    ViewData["Title"] = "Planning";
+    var plantas = Model.Maquinas.Select(m => (m.PlantaId, m.Planta)).Distinct().ToList();
+    var areas = Model.Maquinas.Select(m => (m.AreaId, m.Area)).Distinct().ToList();
+    var hoy = DateOnly.FromDateTime(DateTime.Today);
+}
+
+<div class="titulo">
+    <h1>Planning · @Model.TituloMes</h1>
+    <div class="acciones derecha">
+        <a href="@Model.EnlaceMes(-1)" class="boton secundario">‹ Mes anterior</a>
+        <a href="@Model.EnlaceMes(1)" class="boton secundario">Mes siguiente ›</a>
+    </div>
+</div>
+<p class="nota">Cantidad de mantenimientos preventivos programados por día que todavía no tienen orden de trabajo.</p>
+
+<form method="get" class="filtros">
+    <input type="hidden" name="mes" value="@Model.Mes" />
+    <label>Planta
+        <select name="plantaId">
+            <option value="">Todas</option>
+            @foreach (var (id, nombre) in plantas) { <option value="@id" selected="@(Model.PlantaId == id)">@nombre</option> }
+        </select>
+    </label>
+    <label>Área
+        <select name="areaId">
+            <option value="">Todas</option>
+            @foreach (var (id, nombre) in areas) { <option value="@id" selected="@(Model.AreaId == id)">@nombre</option> }
+        </select>
+    </label>
+    <label>Máquina
+        <select name="maquinaId">
+            <option value="">Todas</option>
+            @foreach (var m in Model.Maquinas) { <option value="@m.Id" selected="@(Model.MaquinaId == m.Id)">@m.Codigo · @m.Nombre</option> }
+        </select>
+    </label>
+    <label>Especialidad
+        <select name="especialidadId">
+            <option value="">Todas</option>
+            @if (Model.Catalogos is { } c)
+            {
+                foreach (var e in c.Especialidades) { <option value="@e.Id" selected="@(Model.EspecialidadId == e.Id)">@e.Nombre</option> }
+            }
+        </select>
+    </label>
+    <button type="submit" class="boton">Filtrar</button>
+    <a href="/planning?mes=@Model.Mes" class="boton secundario">Limpiar</a>
+</form>
+
+@if (Model.ErrorCarga is not null)
+{
+    <div class="aviso error" role="alert">@Model.ErrorCarga</div>
+}
+else if (Model.Resultado is { } r)
+{
+    <p class="nota">@r.Total programados en el mes.</p>
+    <table class="calendario">
+        <thead><tr><th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th><th>Dom</th></tr></thead>
+        <tbody>
+            @foreach (var semana in Model.Semanas())
+            {
+                <tr>
+                    @foreach (var d in semana)
+                    {
+                        if (d is null)
+                        {
+                            <td class="fuera"></td>
+                        }
+                        else
+                        {
+                            <td class="@(d.Cantidad > 0 ? "con" : "") @(d.Dia == hoy ? "hoy" : "")">
+                                <span class="dia">@d.Dia.Day</span>
+                                @if (d.Cantidad > 0)
+                                {
+                                    <span class="cantidad">@d.Cantidad</span>
+                                }
+                            </td>
+                        }
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}

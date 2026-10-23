@@ -25,5 +25,20 @@ public class IndexModel(ApiCliente api) : PaginaBase(api)
         }
     }
 
+    /// <summary>RF-12: descarga el Excel con los filtros de la pantalla.</summary>
+    public async Task<IActionResult> OnGetExportarAsync(CancellationToken ct)
+    {
+        try
+        {
+            var archivo = await Api.ExportarOtAsync(Numero, Estado, ct);
+            return File(archivo.Contenido, archivo.Tipo, archivo.Nombre);
+        }
+        catch (ApiException e)
+        {
+            TempData["Error"] = e.Mensaje;
+            return Redirect(Enlace(1));
+        }
+    }
+
     public string Enlace(int pagina) => $"/ot?pagina={pagina}&numero={Numero}&estado={Estado}";
 }

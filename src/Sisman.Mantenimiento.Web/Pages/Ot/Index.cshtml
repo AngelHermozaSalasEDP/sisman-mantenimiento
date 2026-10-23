@@ -4,7 +4,15 @@
     ViewData["Title"] = "Órdenes de trabajo";
 }
 
-<h1>Órdenes de trabajo</h1>
+<div class="titulo">
+    <h1>Órdenes de trabajo</h1>
+    @if (Model.EsPlanificador)
+    {
+        <div class="acciones derecha">
+            <a href="/ot?handler=Exportar&numero=@Model.Numero&estado=@Model.Estado" class="boton secundario">Exportar a Excel</a>
+        </div>
+    }
+</div>
 
 <form method="get" class="filtros">
     <label>Número <input name="numero" type="number" min="1" value="@Model.Numero" /></label>

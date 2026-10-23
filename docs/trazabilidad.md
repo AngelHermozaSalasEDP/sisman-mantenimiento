@@ -19,7 +19,7 @@ RF → Historia → Caso de uso → Reglas → Endpoint → Clase → Prueba. Se
 
 Los endpoints están definidos en `specs/technical/stack-y-endpoints.md` y `docs/api/openapi-borrador.yaml` (borrador v0.1, 2026-10-23). Arquitectura: `docs/arquitectura/` y ADR-003 a ADR-006. Todas las rutas llevan el prefijo `/api/v1`.
 
-## Web mínima de demostración (`Sisman.Mantenimiento.Web`)
+## Web de demostración (`Sisman.Mantenimiento.Web`)
 
 Plan: documento 33 del proyecto de modernización (decisiones D1 a D6 aprobadas el 2026-10-23). La web no tiene reglas propias: llama a la API y muestra sus respuestas.
 
@@ -28,7 +28,21 @@ Plan: documento 33 del proyecto de modernización (decisiones D1 a D6 aprobadas 
 | Login y salir | `/login`, `/logout` | RF-11 | `LoginModel`, `LogoutModel` | `WebTests` (sin sesión, credenciales inválidas, login, token vencido) |
 | Lista de MP | `/mp` | RF-02 | `Mp/IndexModel` | `WebTests` (lista con token) |
 | Detalle de MP, aprobar, programar fecha, generar OT | `/mp/{id}` | RF-02, RF-04, RF-05, RF-07 | `Mp/DetalleModel` | `WebTests` (botones por perfil, error de la API, antifalsificación) |
-| Lista de OT | `/ot` | RF-08 | `Ot/IndexModel` | Recorrido manual de la demo |
+| Lista de OT y exportación a Excel | `/ot` | RF-08, RF-12 | `Ot/IndexModel` | `WebTests` (exportar) y recorrido |
 | Detalle de OT y cambio de estado | `/ot/{id}` | RF-08, RF-09 | `Ot/DetalleModel` | Recorrido manual de la demo |
+| Alta y edición de MP | `/mp/nuevo`, `/mp/editar/{id}` | RF-01, RF-03 | `Mp/FormularioModel` | `WebTests` (formulario según perfil) y recorrido |
+| Eliminar fecha | `/mp/{id}` | RF-06 | `Mp/DetalleModel` | Recorrido |
+| Planning | `/planning` | RF-10 | `PlanningModel` | `WebTests` (calendario) y recorrido |
 
-El recorrido completo de la demo (21 comprobaciones, contra la API y la base reales) se ejecutó el 2026-10-23 con un script HTTP; está descrito en la evidencia de IA 013.
+Los recorridos de la demo (21 y 18 comprobaciones, contra la API y la base reales) se ejecutaron el 2026-10-23 con scripts HTTP; están descritos en las evidencias de IA 013 y 014.
+
+## Requisitos no funcionales
+
+| RNF | Cómo se verifica | Resultado |
+|---|---|---|
+| RNF-01 Rendimiento | `RendimientoTests`: 26 000 OT, cinco consultas | 13 a 47 ms y 22,9 KB por página (91 KB con 200 filas); límite 2 s y 200 KB |
+| RNF-02 Integridad | `GenerarOtTests`: 20 solicitudes simultáneas y prueba de mutación | Sin duplicados; el defecto del original se detecta |
+| RNF-03 Seguridad | Política por defecto que exige token; `AutenticacionTests`; búsqueda de secretos | Ver `docs/calidad.md` |
+| RNF-04 Errores | Pruebas de error en cada endpoint (400, 401, 403, 404, 409) | En verde |
+| RNF-05 Reproducibilidad | Clon limpio: compila, pruebas en verde, la web arranca | Verificado el 2026-10-23 (sin Docker) |
+| RNF-06 Auditoría | Usuario y fecha en altas y cambios; `X-Correlation-Id` | `AutenticacionTests`, `MantenimientosPreventivosTests`, `OrdenesTrabajoTests` |

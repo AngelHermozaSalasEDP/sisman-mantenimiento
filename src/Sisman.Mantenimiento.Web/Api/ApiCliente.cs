@@ -73,17 +73,50 @@ public class ApiCliente(HttpClient http)
     public Task<OtDto> CambiarEstadoOtAsync(int id, int estado, CancellationToken ct) =>
         EnviarAsync<OtDto>(HttpMethod.Put, $"api/v1/ordenes-trabajo/{id}/estado", new { estado }, ct);
 
+    public Task<MpDto> CrearMpAsync(MpEntrada entrada, CancellationToken ct) =>
+        EnviarAsync<MpDto>(HttpMethod.Post, "api/v1/mantenimientos-preventivos", entrada, ct);
+
+    public Task<MpDto> EditarMpAsync(int id, MpEntrada entrada, CancellationToken ct) =>
+        EnviarAsync<MpDto>(HttpMethod.Put, $"api/v1/mantenimientos-preventivos/{id}", entrada, ct);
+
+    public Task EliminarFechaAsync(int mpId, int fechaId, CancellationToken ct) =>
+        EnviarAsync<object>(HttpMethod.Delete, $"api/v1/mantenimientos-preventivos/{mpId}/fechas/{fechaId}", null, ct, sinCuerpo: true);
+
+    public Task<CatalogosDto> CatalogosAsync(CancellationToken ct) =>
+        EnviarAsync<CatalogosDto>(HttpMethod.Get, "api/v1/catalogos", null, ct);
+
+    public Task<IReadOnlyList<MaquinaResumen>> MaquinasAsync(CancellationToken ct) =>
+        EnviarAsync<IReadOnlyList<MaquinaResumen>>(HttpMethod.Get, "api/v1/maquinas", null, ct);
+
+    public Task<PlanningDto> PlanningAsync(DateOnly desde, DateOnly hasta, int? plantaId, int? areaId, int? maquinaId, int? especialidadId, CancellationToken ct) =>
+        EnviarAsync<PlanningDto>(HttpMethod.Get,
+            $"api/v1/planning?desde={desde:yyyy-MM-dd}&hasta={hasta:yyyy-MM-dd}" + Param("plantaId", plantaId?.ToString())
+            + Param("areaId", areaId?.ToString()) + Param("maquinaId", maquinaId?.ToString()) + Param("especialidadId", especialidadId?.ToString()), null, ct);
+
+    /// <summary>RF-12: el Excel tal como lo arma la API.</summary>
+    public async Task<Archivo> ExportarOtAsync(int? numero, int? estado, CancellationToken ct)
+    {
+        using var respuesta = await http.GetAsync(
+            "api/v1/ordenes-trabajo/exportacion?x=1" + Param("numero", numero?.ToString()) + Param("estado", estado?.ToString()), ct);
+        if (respuesta.StatusCode == HttpStatusCode.Unauthorized) throw new SesionVencidaException();
+        if (!respuesta.IsSuccessStatusCode) throw await LeerProblemaAsync(respuesta, ct);
+        var nombre = respuesta.Content.Headers.ContentDisposition?.FileNameStar
+            ?? respuesta.Content.Headers.ContentDisposition?.FileName?.Trim('"') ?? "ordenes-trabajo.xlsx";
+        return new Archivo(await respuesta.Content.ReadAsByteArrayAsync(ct),
+            respuesta.Content.Headers.ContentType?.MediaType ?? "application/octet-stream", nombre);
+    }
+
     private static string Param(string nombre, string? valor) =>
         string.IsNullOrWhiteSpace(valor) ? "" : $"&{nombre}={Uri.EscapeDataString(valor.Trim())}";
 
-    private async Task<T> EnviarAsync<T>(HttpMethod metodo, string ruta, object? cuerpo, CancellationToken ct, bool esLogin = false)
+    private async Task<T> EnviarAsync<T>(HttpMethod metodo, string ruta, object? cuerpo, CancellationToken ct, bool esLogin = false, bool sinCuerpo = false)
     {
         using var solicitud = new HttpRequestMessage(metodo, ruta);
         if (cuerpo is not null) solicitud.Content = JsonContent.Create(cuerpo, options: Json);
 
         using var respuesta = await http.SendAsync(solicitud, ct);
         if (respuesta.IsSuccessStatusCode)
-            return (await respuesta.Content.ReadFromJsonAsync<T>(Json, ct))!;
+            return sinCuerpo ? default! : (await respuesta.Content.ReadFromJsonAsync<T>(Json, ct))!;
 
         // En el login, el 401 significa credenciales inválidas; en lo demás, token vencido.
         if (respuesta.StatusCode == HttpStatusCode.Unauthorized && !esLogin)

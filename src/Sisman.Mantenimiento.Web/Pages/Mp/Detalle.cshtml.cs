@@ -48,6 +48,13 @@ public class DetalleModel(ApiCliente api) : PaginaBase(api)
         }, $"/mp/{id}");
     }
 
+    public Task<IActionResult> OnPostEliminarFechaAsync(int id, int fechaId, CancellationToken ct) =>
+        AccionAsync(async () =>
+        {
+            await Api.EliminarFechaAsync(id, fechaId, ct);
+            return "Se eliminó la fecha programada.";
+        }, $"/mp/{id}");
+
     public async Task<IActionResult> OnPostGenerarAsync(int id, int fechaId, CancellationToken ct)
     {
         try

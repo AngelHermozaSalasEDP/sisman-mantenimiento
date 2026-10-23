@@ -109,3 +109,18 @@ td form { margin: 0; }
 .login label { margin-top: .5rem; color: var(--texto-suave); font-size: .9rem; }
 .login .boton { margin-top: 1rem; }
 .campo-error { color: var(--error-texto); font-size: .85rem; }
+
+.acciones.derecha { margin-left: auto; }
+
+.formulario { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: .9rem 1.25rem; background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio); padding: 1.25rem; }
+.formulario label { display: flex; flex-direction: column; gap: .3rem; color: var(--texto-suave); font-size: .9rem; }
+.formulario input, .formulario select { color: var(--texto); }
+.formulario .ancho { grid-column: 1 / -1; }
+
+.calendario { table-layout: fixed; }
+.calendario td { height: 4.5rem; vertical-align: top; }
+.calendario td.fuera { background: var(--fondo); }
+.calendario td.con { background: #eef4fc; }
+.calendario td.hoy { outline: 2px solid var(--primario); outline-offset: -2px; }
+.calendario .dia { color: var(--texto-suave); font-size: .85rem; }
+.calendario .cantidad { display: block; margin-top: .3rem; font-size: 1.35rem; font-weight: 700; color: var(--primario-oscuro); }

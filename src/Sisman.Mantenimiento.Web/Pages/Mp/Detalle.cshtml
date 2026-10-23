@@ -17,11 +17,17 @@ else if (mp is not null)
     <div class="titulo">
         <h1>@mp.Codigo</h1>
         <span class="etiqueta @mp.Estado.ToLowerInvariant()">@mp.Estado</span>
-        @if (Model.EsPlanificador && mp.Estado != "Aprobado")
+        @if (Model.EsPlanificador)
         {
-            <form method="post" asp-page-handler="Aprobar" asp-route-id="@mp.Id">
-                <button type="submit" class="boton">Aprobar</button>
-            </form>
+            <div class="acciones derecha">
+                <a href="/mp/editar/@mp.Id" class="boton secundario">Editar</a>
+                @if (mp.Estado != "Aprobado")
+                {
+                    <form method="post" asp-page-handler="Aprobar" asp-route-id="@mp.Id">
+                        <button type="submit" class="boton">Aprobar</button>
+                    </form>
+                }
+            </div>
         }
     </div>
 
@@ -47,12 +53,22 @@ else if (mp is not null)
                     <td>@Textos.Fecha(f.FechaFin)</td>
                     <td>@(f.NumeroOt is null ? "Sin OT" : $"OT {f.NumeroOt}")</td>
                     <td>
-                        @if (Model.EsPlanificador && f.NumeroOt is null && mp.Estado == "Aprobado")
+                        @if (Model.EsPlanificador && f.NumeroOt is null)
                         {
-                            <form method="post" asp-page-handler="Generar" asp-route-id="@mp.Id">
-                                <input type="hidden" name="fechaId" value="@f.Id" />
-                                <button type="submit" class="boton">Generar OT</button>
-                            </form>
+                            <div class="acciones">
+                                @if (mp.Estado == "Aprobado")
+                                {
+                                    <form method="post" asp-page-handler="Generar" asp-route-id="@mp.Id">
+                                        <input type="hidden" name="fechaId" value="@f.Id" />
+                                        <button type="submit" class="boton">Generar OT</button>
+                                    </form>
+                                }
+                                <form method="post" asp-page-handler="EliminarFecha" asp-route-id="@mp.Id"
+                                      onsubmit="return confirm('¿Eliminar la fecha del @Textos.Fecha(f.FechaInicio)?');">
+                                    <input type="hidden" name="fechaId" value="@f.Id" />
+                                    <button type="submit" class="boton secundario">Eliminar</button>
+                                </form>
+                            </div>
                         }
                     </td>
                 </tr>

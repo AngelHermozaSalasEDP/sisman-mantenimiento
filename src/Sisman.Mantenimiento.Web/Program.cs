@@ -31,6 +31,7 @@ builder.Services.AddRazorPages(o =>
     o.Conventions.AuthorizeFolder("/");
     o.Conventions.AllowAnonymousToPage("/Login");
     o.Conventions.AllowAnonymousToPage("/Error");
+    o.Conventions.AddPageRoute("/Mp/Formulario", "/mp/nuevo");
 });
 
 builder.Services.AddHttpContextAccessor();

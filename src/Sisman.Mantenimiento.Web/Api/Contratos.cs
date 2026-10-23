@@ -13,11 +13,33 @@ public record Pagina<T>(IReadOnlyList<T> Items, int PaginaActual, int TamanoPagi
 public record FechaDto(int Id, DateOnly FechaInicio, DateOnly FechaFin, int? NumeroOt);
 
 public record MpDto(
-    int Id, string Codigo, string Estado, string Descripcion, int MaquinaId, int? SistemaId,
+    int Id, string Codigo, string Estado, string Descripcion, int MaquinaId, int? SistemaId, int? EquipoId,
+    int TipoTrabajoId, int FuenteId, int OportunidadId, int EspecialidadId,
     int Frecuencia, int ValorFrecuencia, byte? Mes,
     DateOnly? FechaInicio, DateOnly? FechaProxima, DateOnly? FechaUltima,
     string? ModificadoPor, DateTime? ModificadoEn, string? AprobadoPor, DateTime? AprobadoEn,
     IReadOnlyList<FechaDto> Fechas);
+
+/// <summary>Lo que se envía al registrar (RF-01) o editar (RF-03) un MP.</summary>
+public record MpEntrada(
+    string Descripcion, int MaquinaId, int? SistemaId, int? EquipoId,
+    int TipoTrabajoId, int FuenteId, int OportunidadId, int EspecialidadId,
+    int Frecuencia, int ValorFrecuencia, byte? Mes);
+
+public record CatalogoDto(int Id, string Categoria, string Nombre);
+
+public record CatalogosDto(
+    IReadOnlyList<CatalogoDto> TiposTrabajo, IReadOnlyList<CatalogoDto> Fuentes,
+    IReadOnlyList<CatalogoDto> Oportunidades, IReadOnlyList<CatalogoDto> Especialidades);
+
+public record EquipoResumen(int Id, string Nombre);
+public record SistemaResumen(int Id, string Nombre, IReadOnlyList<EquipoResumen> Equipos);
+public record MaquinaResumen(int Id, string Codigo, string Nombre, int AreaId, string Area, int PlantaId, string Planta, IReadOnlyList<SistemaResumen> Sistemas);
+
+public record DiaPlanningDto(DateOnly Dia, int Cantidad);
+public record PlanningDto(DateOnly Desde, DateOnly Hasta, int Total, IReadOnlyList<DiaPlanningDto> Dias);
+
+public record Archivo(byte[] Contenido, string Tipo, string Nombre);
 
 public record HistorialDto(int EstadoAnterior, int EstadoNuevo, string Usuario, DateTime Fecha);
 

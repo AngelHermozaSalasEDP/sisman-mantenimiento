@@ -17,9 +17,11 @@ public class MpEntradaValidator : AbstractValidator<MpEntrada>
         RuleFor(x => x.EspecialidadId).GreaterThan(0);
         RuleFor(x => x.Frecuencia).InclusiveBetween(1, 4).WithMessage("La frecuencia debe ser 1 (diario), 2 (semanal), 3 (mensual) o 4 (anual).");
         RuleFor(x => x.ValorFrecuencia).GreaterThan(0);
-        RuleFor(x => x.Mes).NotNull().InclusiveBetween((byte)1, (byte)12)
-            .When(x => x.Frecuencia is 3 or 4)
-            .WithMessage("La frecuencia mensual o anual exige un mes entre 1 y 12.");
+        // WithMessage solo afecta a la regla anterior: cada una lleva el suyo.
+        RuleFor(x => x.Mes)
+            .NotNull().WithMessage("La frecuencia mensual o anual exige un mes entre 1 y 12.")
+            .InclusiveBetween((byte)1, (byte)12).WithMessage("La frecuencia mensual o anual exige un mes entre 1 y 12.")
+            .When(x => x.Frecuencia is 3 or 4);
     }
 }
 

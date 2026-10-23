@@ -1,0 +1,125 @@
+@page "/mp/editar/{id:int?}"
+@model Sisman.Mantenimiento.Web.Pages.Mp.FormularioModel
+@{
+    var editando = Model.Id is not null;
+    ViewData["Title"] = editando ? $"Editar {Model.Codigo}" : "Nuevo mantenimiento preventivo";
+    var c = Model.Catalogos;
+}
+
+<p><a href="@(editando ? $"/mp/{Model.Id}" : "/mp")">‹ Volver</a></p>
+<h1>@ViewData["Title"]</h1>
+
+@if (editando)
+{
+    <p class="nota">Al guardar, el MP queda en estado «Modificado» y debe aprobarse de nuevo.</p>
+}
+@if (Model.Error is not null)
+{
+    <div class="aviso error" role="alert">@Model.Error</div>
+}
+
+<form method="post" class="formulario">
+    <label class="ancho">Descripción
+        <input asp-for="Mp.Descripcion" maxlength="200" required />
+        <span asp-validation-for="Mp.Descripcion" class="campo-error"></span>
+    </label>
+
+    <label>Máquina
+        <select asp-for="Mp.MaquinaId" required>
+            <option value="0">Elija…</option>
+            @foreach (var m in Model.Maquinas)
+            {
+                <option value="@m.Id">@m.Codigo · @m.Nombre (@m.Area)</option>
+            }
+        </select>
+        <span asp-validation-for="Mp.MaquinaId" class="campo-error"></span>
+    </label>
+
+    <label>Sistema (opcional)
+        <select asp-for="Mp.SistemaId">
+            <option value="">Ninguno</option>
+            @foreach (var m in Model.Maquinas)
+            {
+                <optgroup label="@m.Codigo">
+                    @foreach (var s in m.Sistemas)
+                    {
+                        <option value="@s.Id">@s.Nombre</option>
+                    }
+                </optgroup>
+            }
+        </select>
+    </label>
+
+    <label>Equipo (opcional)
+        <select asp-for="Mp.EquipoId">
+            <option value="">Ninguno</option>
+            @foreach (var m in Model.Maquinas)
+            {
+                foreach (var s in m.Sistemas)
+                {
+                    <optgroup label="@m.Codigo · @s.Nombre">
+                        @foreach (var e in s.Equipos)
+                        {
+                            <option value="@e.Id">@e.Nombre</option>
+                        }
+                    </optgroup>
+                }
+            }
+        </select>
+    </label>
+
+    @if (c is not null)
+    {
+        <label>Tipo de trabajo
+            <select asp-for="Mp.TipoTrabajoId" required>
+                <option value="0">Elija…</option>
+                @foreach (var x in c.TiposTrabajo) { <option value="@x.Id">@x.Nombre</option> }
+            </select>
+            <span asp-validation-for="Mp.TipoTrabajoId" class="campo-error"></span>
+        </label>
+        <label>Fuente de información
+            <select asp-for="Mp.FuenteId" required>
+                <option value="0">Elija…</option>
+                @foreach (var x in c.Fuentes) { <option value="@x.Id">@x.Nombre</option> }
+            </select>
+            <span asp-validation-for="Mp.FuenteId" class="campo-error"></span>
+        </label>
+        <label>Oportunidad de intervención
+            <select asp-for="Mp.OportunidadId" required>
+                <option value="0">Elija…</option>
+                @foreach (var x in c.Oportunidades) { <option value="@x.Id">@x.Nombre</option> }
+            </select>
+            <span asp-validation-for="Mp.OportunidadId" class="campo-error"></span>
+        </label>
+        <label>Especialidad
+            <select asp-for="Mp.EspecialidadId" required>
+                <option value="0">Elija…</option>
+                @foreach (var x in c.Especialidades) { <option value="@x.Id">@x.Nombre</option> }
+            </select>
+            <span asp-validation-for="Mp.EspecialidadId" class="campo-error"></span>
+        </label>
+    }
+
+    <label>Frecuencia
+        <select asp-for="Mp.Frecuencia">
+            @foreach (var f in new[] { 1, 2, 3, 4 }) { <option value="@f">@Textos.Frecuencia(f)</option> }
+        </select>
+    </label>
+    <label>Cada (valor)
+        <input asp-for="Mp.ValorFrecuencia" type="number" min="1" max="999" required />
+        <span asp-validation-for="Mp.ValorFrecuencia" class="campo-error"></span>
+    </label>
+    <label>Mes (solo mensual o anual)
+        <select asp-for="Mp.Mes">
+            <option value="">—</option>
+            @for (byte mes = 1; mes <= 12; mes++)
+            {
+                <option value="@mes">@System.Globalization.CultureInfo.GetCultureInfo("es-PE").DateTimeFormat.GetMonthName(mes)</option>
+            }
+        </select>
+    </label>
+
+    <div class="ancho">
+        <button type="submit" class="boton">@(editando ? "Guardar cambios" : "Registrar")</button>
+    </div>
+</form>

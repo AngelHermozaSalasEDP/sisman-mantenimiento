@@ -1,6 +1,6 @@
 # Resumen del uso de IA
 
-Estado: **parcial** (13 evidencias registradas; se amplía con cada tarea).
+Estado: **parcial** (14 evidencias registradas; se amplía con cada tarea).
 
 | # | Entrada | Tipo | Resultado |
 |---|---|---|---|
@@ -17,6 +17,7 @@ Estado: **parcial** (13 evidencias registradas; se amplía con cada tarea).
 | 011 | RF-07: correlativo transaccional, prueba de 20 solicitudes y prueba de mutación | código, pruebas y depuración | Aceptado; el primer fallo era de la prueba |
 | 012 | RF-08 y RF-09: consulta de OT y cambio de estado | código y pruebas | Aceptado con 2 autocorrecciones; RNF-01 sin medir |
 | 013 | Web mínima de demostración con recorrido de la demo | código y pruebas | Aceptado; el primer recorrido falló por el script |
+| 014 | Completar todas las opciones (RF-01, RF-06, RF-10, RF-12, web, RNF-01) | código, pruebas, depuración y refactorización | Aceptado; 4 correcciones; 1 fallo intermitente sin explicar |
 
 ## Dónde ayudó la IA
 

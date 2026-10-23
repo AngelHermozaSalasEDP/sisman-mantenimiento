@@ -43,6 +43,31 @@ public class ApiFalsa : HttpMessageHandler
             return Json(HttpStatusCode.OK, Mp);
         if (ruta == "/api/v1/mantenimientos-preventivos/7/aprobacion")
             return Json(HttpStatusCode.Conflict, """{"status":409,"codigo":"mp.ya-aprobado","detail":"El MP-0000007 ya está aprobado."}""", "application/problem+json");
+        if (ruta == "/api/v1/catalogos")
+            return Json(HttpStatusCode.OK, """{"tiposTrabajo":[{"id":1,"categoria":"TipoTrabajo","nombre":"Lubricación"}],"fuentes":[{"id":2,"categoria":"FuenteInformacion","nombre":"Manual"}],"oportunidades":[{"id":3,"categoria":"OportunidadIntervencion","nombre":"Parada"}],"especialidades":[{"id":4,"categoria":"Especialidad","nombre":"Mecánica"}]}""");
+        if (ruta == "/api/v1/maquinas")
+            return Json(HttpStatusCode.OK, """[{"id":1,"codigo":"MAQ-001","nombre":"Prensa","areaId":1,"area":"Prensa","plantaId":1,"planta":"Planta","sistemas":[{"id":1,"nombre":"Hidráulico","equipos":[{"id":1,"nombre":"Bomba"}]}]}]""");
+        if (ruta.StartsWith("/api/v1/planning?"))
+        {
+            var q = System.Web.HttpUtility.ParseQueryString(r.RequestUri.Query);
+            var desde = DateOnly.Parse(q["desde"]!);
+            var hasta = DateOnly.Parse(q["hasta"]!);
+            var dias = string.Join(",", Enumerable.Range(0, hasta.DayNumber - desde.DayNumber + 1)
+                .Select(i => $$"""{"dia":"{{desde.AddDays(i):yyyy-MM-dd}}","cantidad":{{(i == 9 ? 3 : 0)}}}"""));
+            return Json(HttpStatusCode.OK, $$"""{"desde":"{{desde:yyyy-MM-dd}}","hasta":"{{hasta:yyyy-MM-dd}}","total":3,"dias":[{{dias}}]}""");
+        }
+        if (ruta.StartsWith("/api/v1/ordenes-trabajo/exportacion"))
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new ByteArrayContent([0x50, 0x4B, 3, 4])
+                {
+                    Headers =
+                    {
+                        ContentType = new("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
+                        ContentDisposition = new("attachment") { FileName = "ordenes-trabajo.xlsx" }
+                    }
+                }
+            };
         if (ruta == "/api/v1/mantenimientos-preventivos/99")
             return Json(HttpStatusCode.Unauthorized, "");
         return Json(HttpStatusCode.NotFound, """{"status":404,"detail":"No existe."}""", "application/problem+json");
@@ -158,5 +183,46 @@ public class WebTests(WebFactory fabrica) : IClassFixture<WebFactory>
         await LoginAsync(http, "planificador", ApiFalsa.ClaveBuena);
         var r = await http.PostAsync("/mp/7?handler=Aprobar", new FormUrlEncodedContent([]));
         Assert.Equal(HttpStatusCode.BadRequest, r.StatusCode);
+    }
+
+    [Fact(DisplayName = "RF-10: el planning muestra el calendario del mes con las cantidades")]
+    public async Task Planning_Muestra_Calendario()
+    {
+        var http = Cliente();
+        await LoginAsync(http, "especialista", ApiFalsa.ClaveBuena);
+        var r = await http.GetAsync("/planning?mes=2026-11");
+        Assert.Equal(HttpStatusCode.OK, r.StatusCode);
+        var html = await r.Content.ReadAsStringAsync();
+        Assert.Contains("Planning · Noviembre 2026", html);
+        Assert.Contains("3 programados en el mes", html);
+        Assert.Contains("<span class=\"cantidad\">3</span>", html);
+        Assert.Contains(fabrica.Api.Llamadas, l => l.StartsWith("GET /api/v1/planning?desde=2026-11-01&hasta=2026-11-30"));
+    }
+
+    [Fact(DisplayName = "RF-01: el planificador abre el formulario de alta con las listas; el especialista no")]
+    public async Task Formulario_De_Alta_Segun_Perfil()
+    {
+        var plan = Cliente();
+        await LoginAsync(plan, "planificador", ApiFalsa.ClaveBuena);
+        var html = await (await plan.GetAsync("/mp/nuevo")).Content.ReadAsStringAsync();
+        Assert.Contains("Nuevo mantenimiento preventivo", html);
+        Assert.Contains("MAQ-001", html);
+        Assert.Contains("Lubricación", html);
+
+        var esp = Cliente();
+        await LoginAsync(esp, "especialista", ApiFalsa.ClaveBuena);
+        Assert.Equal(HttpStatusCode.Redirect, (await esp.GetAsync("/mp/nuevo")).StatusCode);
+    }
+
+    [Fact(DisplayName = "RF-12: exportar descarga el archivo que entrega la API")]
+    public async Task Exportar_Descarga_El_Archivo()
+    {
+        var http = Cliente();
+        await LoginAsync(http, "planificador", ApiFalsa.ClaveBuena);
+        var r = await http.GetAsync("/ot?handler=Exportar&estado=40");
+        Assert.Equal(HttpStatusCode.OK, r.StatusCode);
+        Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", r.Content.Headers.ContentType?.MediaType);
+        Assert.Equal([0x50, 0x4B, 3, 4], await r.Content.ReadAsByteArrayAsync());
+        Assert.Contains(fabrica.Api.Llamadas, l => l.StartsWith("GET /api/v1/ordenes-trabajo/exportacion") && l.Contains("estado=40"));
     }
 }

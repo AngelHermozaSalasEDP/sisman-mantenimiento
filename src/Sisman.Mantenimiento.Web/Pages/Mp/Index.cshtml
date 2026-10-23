@@ -4,7 +4,13 @@
     ViewData["Title"] = "Mantenimientos preventivos";
 }
 
-<h1>Mantenimientos preventivos</h1>
+<div class="titulo">
+    <h1>Mantenimientos preventivos</h1>
+    @if (Model.EsPlanificador)
+    {
+        <div class="acciones derecha"><a href="/mp/nuevo" class="boton">Nuevo MP</a></div>
+    }
+</div>
 
 <form method="get" class="filtros">
     <label>Código <input name="codigo" value="@Model.Codigo" placeholder="MP-0000001" maxlength="10" /></label>
