@@ -27,6 +27,7 @@ public static class DependencyInjection
         services.AddSingleton<IGeneradorToken, GeneradorTokenJwt>();
         services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
         services.AddScoped<IMpRepositorio, MpRepositorio>();
+        services.AddScoped<IOtRepositorio, OtRepositorio>();
         services.AddScoped<SemillaDatos>();
         return services;
     }

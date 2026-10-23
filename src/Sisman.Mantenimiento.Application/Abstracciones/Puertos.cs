@@ -37,6 +37,27 @@ public record FiltroMp(
     string? Codigo, int? TipoTrabajoId, EstadoMp? Estado, DateOnly? FechaDesde, DateOnly? FechaHasta,
     int Pagina, int TamanoPagina);
 
+public interface IOtRepositorio
+{
+    /// <summary>
+    /// Ejecuta la operación en una transacción. Si algo falla, se deshace todo, incluido el avance
+    /// del correlativo (RN-33). Si la base pide reintentar, se repite la operación completa.
+    /// </summary>
+    Task<T> EnTransaccionAsync<T>(Func<CancellationToken, Task<T>> operacion, CancellationToken ct);
+
+    /// <summary>Lee la fecha con su MP y su OT, bloqueando la fila hasta el fin de la transacción.</summary>
+    Task<FechaProgramada?> ObtenerFechaParaGenerarAsync(int fechaId, CancellationToken ct);
+
+    /// <summary>Avanza el correlativo y devuelve el nuevo valor; la fila queda bloqueada hasta el fin de la transacción (RN-34).</summary>
+    Task<int> SiguienteNumeroAsync(string correlativo, CancellationToken ct);
+
+    void Agregar(OrdenTrabajo ot);
+
+    Task<OrdenTrabajo?> ObtenerAsync(int id, CancellationToken ct);
+
+    Task GuardarAsync(CancellationToken ct);
+}
+
 public interface IMpRepositorio
 {
     /// <summary>Devuelve el MP con sus fechas (y el número de OT de cada una), listo para modificarlo.</summary>

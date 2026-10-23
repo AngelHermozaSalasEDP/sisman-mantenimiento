@@ -12,6 +12,7 @@ public static class DependencyInjection
         services.AddValidatorsFromAssemblyContaining<LoginValidator>();
         services.AddScoped<AutenticacionServicio>();
         services.AddScoped<MpServicio>();
+        services.AddScoped<OrdenesTrabajo.OtServicio>();
         return services;
     }
 }
