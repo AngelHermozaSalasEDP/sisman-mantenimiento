@@ -1,6 +1,6 @@
 # Resumen del uso de IA
 
-Estado: **parcial** (8 evidencias registradas; se amplía con cada tarea).
+Estado: **parcial** (9 evidencias registradas; se amplía con cada tarea).
 
 | # | Entrada | Tipo | Resultado |
 |---|---|---|---|
@@ -12,6 +12,7 @@ Estado: **parcial** (8 evidencias registradas; se amplía con cada tarea).
 | 006 | Commit con archivos ajenos | control de cambios | Error reconocido |
 | 007 | Historias, casos de uso y reglas desde el análisis | documentación | Aceptado como borrador; 3 reglas a validar |
 | 008 | Modelo, C4, ADR-003 a 006, OpenAPI y specs técnicas | arquitectura | Aceptado como borrador; 3 puntos a revisar |
+| 009 | Solución base .NET 10: dominio, EF Core, JWT, errores y pruebas | código y pruebas | Aceptado con 4 correcciones; Docker sin probar |
 
 ## Dónde ayudó la IA
 

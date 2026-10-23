@@ -1,0 +1,40 @@
+# Uso (desde esta carpeta):  copy .env.example .env  y editar las claves;  docker compose up --build
+# La API queda en http://localhost:8080/swagger. Las claves vienen de .env (no versionado).
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${SQL_SA_PASSWORD:?defina SQL_SA_PASSWORD en .env}
+    ports:
+      - "14330:1433"
+    volumes:
+      - sisman-datos:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -Q \"SELECT 1\" || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Sisman: "Server=db;Database=SismanMantenimiento;User Id=sa;Password=${SQL_SA_PASSWORD};TrustServerCertificate=True"
+      Jwt__Clave: ${JWT_CLAVE:?defina JWT_CLAVE en .env (32 caracteres o más)}
+      Migraciones__AplicarAlArrancar: "true"
+      Semilla__Habilitada: "true"
+      Semilla__ClavePlanificador: ${CLAVE_PLANIFICADOR:?defina CLAVE_PLANIFICADOR en .env}
+      Semilla__ClaveEspecialista: ${CLAVE_ESPECIALISTA:?defina CLAVE_ESPECIALISTA en .env}
+    ports:
+      - "8080:8080"
+
+volumes:
+  sisman-datos:

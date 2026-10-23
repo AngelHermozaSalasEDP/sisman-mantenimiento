@@ -24,3 +24,9 @@ Thumbs.db
 
 # Datos locales de Docker
 docker/data/
+
+# Secretos locales
+.env
+appsettings.Development.json
+appsettings.Local.json
+*.bundle
