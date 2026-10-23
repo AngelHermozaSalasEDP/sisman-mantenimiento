@@ -19,6 +19,8 @@ builder.Host.UseSerilog((ctx, cfg) => cfg
     .Enrich.FromLogContext()
     .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {CorrelationId} {Message:lj}{NewLine}{Exception}"));
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<Sisman.Mantenimiento.Application.Abstracciones.IUsuarioActual, UsuarioActual>();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 

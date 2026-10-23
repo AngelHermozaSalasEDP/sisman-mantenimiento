@@ -1,6 +1,6 @@
 # Resumen del uso de IA
 
-Estado: **parcial** (9 evidencias registradas; se amplía con cada tarea).
+Estado: **parcial** (10 evidencias registradas; se amplía con cada tarea).
 
 | # | Entrada | Tipo | Resultado |
 |---|---|---|---|
@@ -13,6 +13,7 @@ Estado: **parcial** (9 evidencias registradas; se amplía con cada tarea).
 | 007 | Historias, casos de uso y reglas desde el análisis | documentación | Aceptado como borrador; 3 reglas a validar |
 | 008 | Modelo, C4, ADR-003 a 006, OpenAPI y specs técnicas | arquitectura | Aceptado como borrador; 3 puntos a revisar |
 | 009 | Solución base .NET 10: dominio, EF Core, JWT, errores y pruebas | código y pruebas | Aceptado con 4 correcciones; Docker sin probar |
+| 010 | Endpoints de MP (RF-02 a RF-05) con pruebas de integración | código y pruebas | Aceptado; 4 decisiones por confirmar |
 
 ## Dónde ayudó la IA
 

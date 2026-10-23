@@ -26,6 +26,7 @@ public static class DependencyInjection
         services.AddSingleton<IHasheadorClave>(sp => sp.GetRequiredService<HasheadorClave>());
         services.AddSingleton<IGeneradorToken, GeneradorTokenJwt>();
         services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
+        services.AddScoped<IMpRepositorio, MpRepositorio>();
         services.AddScoped<SemillaDatos>();
         return services;
     }

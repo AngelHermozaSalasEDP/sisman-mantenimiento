@@ -31,6 +31,7 @@ Recorte confirmado el 2026-10-23 por el plazo de entrega (31/10/2026). Las espec
 4. Generar una OT desde una fecha programada, con número único garantizado por una transacción y probado con 20 solicitudes simultáneas (RF-07).
 5. Consulta paginada de OT y cambio de estado con las transiciones principales (RF-08, RF-09).
 6. API documentada con OpenAPI y entorno local reproducible (Docker Compose; plan B con SQL Server local).
+7. **Web mínima de demostración** (proyecto `Sisman.Mantenimiento.Web`, añadida el 2026-10-23): login, lista de MP, programar fecha, generar OT, lista de OT y cambio de estado. Se construye después de RF-08 y RF-09 y se reduce u omite si el plazo lo exige.
 
 ## Fuera de la implementación (mejora pendiente, con especificación)
 
@@ -41,7 +42,7 @@ Recorte confirmado el 2026-10-23 por el plazo de entrega (31/10/2026). Las espec
 | RF-10 | Planning | Solo especificado |
 | RF-12 | Exportación a Excel | Solo especificado |
 
-Fuera del módulo: reportes y exportaciones a PDF, rotativa, asignación y consumo de personal en la OT, informe de falla, plan de trabajo, seguridad compartida con otros sistemas, interfaz de usuario web, migración de datos del sistema original.
+Fuera del módulo: reportes y exportaciones a PDF, rotativa, asignación y consumo de personal en la OT, informe de falla, plan de trabajo, seguridad compartida con otros sistemas, interfaz de usuario completa (solo hay la web mínima de demostración), migración de datos del sistema original.
 
 ## Fuente de las reglas
 
