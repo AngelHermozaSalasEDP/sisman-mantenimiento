@@ -1,6 +1,6 @@
 # ADR-004: Validación con FluentValidation en la capa de aplicación
 
-- **Estado:** Propuesta (2026-10-23), pendiente de aceptación del responsable
+- **Estado:** Aceptada (2026-10-23)
 - **Decide:** responsable del proyecto, con propuesta del asistente de IA
 
 ## Contexto

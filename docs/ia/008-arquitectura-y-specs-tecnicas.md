@@ -29,4 +29,4 @@ El asistente propuso el modelo de dominio y el ERD (11 tablas, con restricciones
 
 ## Revisión humana
 
-Pendiente: el responsable debe aceptar los ADR (están como *Propuesta*) y revisar el modelo antes de crear las migraciones.
+El responsable aceptó los ADR-003 a ADR-006 el 2026-10-23. Pendiente: revisar el modelo antes de crear las migraciones.

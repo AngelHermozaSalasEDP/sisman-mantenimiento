@@ -1,6 +1,6 @@
 # ADR-006: Autenticación con JWT propio y dos perfiles
 
-- **Estado:** Propuesta (2026-10-23), pendiente de aceptación del responsable
+- **Estado:** Aceptada (2026-10-23)
 - **Decide:** responsable del proyecto, con propuesta del asistente de IA
 
 ## Contexto
