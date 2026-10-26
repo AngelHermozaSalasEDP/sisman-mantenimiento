@@ -40,7 +40,7 @@ Gracias.
 | 7 | ¿Individual o grupal? | Individual. | Sin cambios. |
 | 8 | Medio de entrega | Repositorio Git con `src/`, `tests/`, `specs/`, `docs/`, `docker/` y README (compilar, ejecutar, probar), más documento técnico, evidencias de IA y PPT. | Revisar el README contra esta lista. |
 | 9 | ¿Claude Code obligatorio? | Sí. | Sin cambios. |
-| 10 | Motor y Docker | SQL Server, MySQL o PostgreSQL con EF Core. Docker muy recomendado y parte de la estructura esperada. | **Pendiente: ejecutar el Docker Compose al menos una vez** (hoy está escrito pero no probado). |
+| 10 | Motor y Docker | SQL Server, MySQL o PostgreSQL con EF Core. Docker muy recomendado y parte de la estructura esperada. | **Decidido el 2026-10-26: no se usa Docker en el proyecto (ADR-007).** |
 | 11 | ¿EF Core con migraciones y esquema propio? | Aceptable; respeta Clean Architecture y separación de responsabilidades. | Confirma ADR-001. |
 
 Recomendación final del instructor: documentar bien las especificaciones y las evidencias de IA conforme se avance.

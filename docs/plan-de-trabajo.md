@@ -9,7 +9,7 @@ Entregar, como proyecto integrador del curso *Agentic Software Development (.NET
 | Fecha de entrega y de presentación | — | **Por confirmar** con el instructor |
 | Individual o grupal | — | **Por confirmar** |
 | Tema y alcance (modernización de un sistema real, un módulo) | ADR-002 | Aceptado por el responsable; **por confirmar** con el instructor |
-| Acceso a datos | EF Core con esquema propio en Docker (ADR-001) | Aceptado por el responsable |
+| Acceso a datos | EF Core con esquema propio en SQL Server local o LocalDB (ADR-001) | Aceptado por el responsable |
 | Base de partida | `docs/alcance.md`, `specs/functional/requisitos.md` v0.1 (12 RF, 6 RNF), 6 evidencias de IA | Hecho el 2026-10-22 |
 | Estimación | **26 a 33 días-persona** (±30 %) | Ver sección 4 |
 
@@ -32,7 +32,7 @@ Este plan es la ruta que sigue el curso: *especificar → diseñar → implement
 |---|---|---|
 | .NET SDK 10 | Instalado (10.0.402) | — |
 | `dotnet-ef` | Instalado en la versión 6.0.8 | **Actualizar a la versión 10** (`dotnet tool update -g dotnet-ef`) |
-| **Docker** | **No instalado** en este equipo (WSL 2 y virtualización sí están disponibles) | Tarea C-03: instalar Docker Desktop o un motor de contenedores en WSL 2. El curso espera `docker/` y el plan prevé Docker Compose |
+| **Docker** | Descartado el 2026-10-26 (ADR-007) | Sin Docker: SQL Server local o LocalDB |
 | SQL Server | Hay instancias locales de SQL Server en el equipo | Se pueden usar como plan B para desarrollo; no se tocan sin indicarlo, y las pruebas de integración deben correr contra un contenedor |
 
 # 3. Plan por fases
@@ -45,7 +45,7 @@ Estados: ☐ pendiente · ◐ en curso · ☑ hecho. Los días son por persona. 
 |---|---|---|---:|---|
 | C-01 | **Rotar la clave `sa`** expuesta en el repositorio de modernización (la hace TI) | Confirmación de TI | 0,25 + espera | — |
 | C-02 | Enviar la consulta al instructor y registrar las respuestas | `docs/consulta-instructor.md` con respuestas | 0,25 | — |
-| C-03 | Dejar Docker funcionando y probar `docker run` de SQL Server | Captura en `docs/ia/capturas/` | 0,5 | — |
+| C-03 | Cancelada (ADR-007): Docker no se usa en el proyecto | Captura en `docs/ia/capturas/` | 0,5 | — |
 | C-04 | Congelar el alcance con la respuesta del instructor | `docs/alcance.md` v1.0 | 0,25 | C-02 |
 
 **Hecho cuando:** el instructor respondió, Docker corre y el alcance quedó congelado.
@@ -95,10 +95,10 @@ Estados: ☐ pendiente · ◐ en curso · ☑ hecho. Los días son por persona. 
 | C-30 | Solución .NET 10 con Domain, Application, Infrastructure, Api y Tests | `src/` compilable | 0,5 |
 | C-31 | Entidades, reglas de dominio y puertos (MP, fecha, OT, estados, correlativo) | `Domain` | 1 |
 | C-32 | EF Core: `DbContext`, configuraciones, migración inicial, restricción de unicidad del número de OT, datos de ejemplo | `Infrastructure` | 1,5 |
-| C-33 | Docker Compose con SQL Server y el README de arranque | `docker/`, `README.md` | 0,5 |
+| C-33 | Cancelada (ADR-007): arranque con SQL Server local o LocalDB en el README | `README.md` | 0,5 |
 | C-34 | Manejo global de errores (ProblemDetails), identificador de correlación | `Api` | 0,5 |
 
-**Hecho cuando:** `docker compose up`, la migración y `dotnet build` corren desde cero siguiendo el README.
+**Hecho cuando:** la migración y `dotnet build` corren desde cero siguiendo el README (sin Docker, ADR-007).
 
 ## Fase 4 — Funcionalidad por incrementos (7 a 9 días) · pesos 25 % + parte del 20 %
 
@@ -206,7 +206,7 @@ Nunca se recortan: RF-05, RF-07 (el núcleo y la razón de ser del módulo), RF-
 |---|---|---|---|
 | 1 | Fase 0 y Fase 1 | Alcance congelado; historias, reglas y matriz | Specs 25 % |
 | 2 | Fases 1 y 2 | Specs técnicas, modelo, C4, 4 o más ADR, OpenAPI borrador | Specs 25 % + Arquitectura 20 % |
-| 3 | Fase 3 y primeros RF | Solución, migración y Docker corriendo; RF-11, RF-01 a 04 | Funcionalidad 25 % |
+| 3 | Fase 3 y primeros RF | Solución y migración corriendo; RF-11, RF-01 a 04 | Funcionalidad 25 % |
 | 4 | Fase 4 | RF-05 a RF-09 con pruebas | Funcionalidad + Pruebas 10 % |
 | 5 | Fases 5, 6 y 7 | Integración, concurrencia, calidad, evidencias de IA, README | Pruebas + IA 15 % |
 | 6 | Fases 8 y 9 | Documento técnico, PPT, ensayo, revisión final | Presentación 5 % |
@@ -216,7 +216,7 @@ Nunca se recortan: RF-05, RF-07 (el núcleo y la razón de ser del módulo), RF-
 | Riesgo | Efecto | Mitigación |
 |---|---|---|
 | El instructor no acepta una modernización o un repositorio con material previo | Rehacer el tema | Preguntar antes de construir (C-02) |
-| Docker no se puede instalar (permisos o licencia de la empresa) | No hay `docker/` ni pruebas de integración con SQL Server real | Plan B con una instancia local de SQL Server; Docker Compose se entrega igualmente, aunque se pruebe en otro equipo; considerar un motor alternativo de contenedores |
+| Docker no se puede instalar (permisos o licencia de la empresa) | No hay pruebas de integración con SQL Server real | Plan B con una instancia local de SQL Server |
 | Alcance excesivo | No se cierra | Congelar RF en C-04; orden de recorte (4.3) |
 | «Vibe coding» por prisa | Pierde el peso de specs y trazabilidad | Regla: no se pide código sin una spec o historia referenciada |
 | Evidencias de IA dejadas para el final | Pierde el 15 % | Registrar al terminar cada tarea |
@@ -242,7 +242,7 @@ Nunca se recortan: RF-05, RF-07 (el núcleo y la razón de ser del módulo), RF-
 |---|---|---|
 | 1 | Pedir a TI la rotación de la clave `sa` (C-01) | Hoy |
 | 2 | Revisar y enviar la consulta al instructor (C-02) | Hoy |
-| 3 | Decidir cómo habilitar Docker (C-03): Docker Desktop, motor en WSL 2 u otra opción, según las políticas de la empresa | Esta semana |
+| 3 | Decidir cómo habilitar Docker (C-03) | Resuelto: no se usa Docker (ADR-007), 2026-10-26 |
 | 4 | Indicar si el trabajo es individual o grupal y la fecha de entrega, cuando el instructor responda | Cuando responda |
 | 5 | Conseguir 30 minutos con un usuario para validar C-13 | Semana 1 |
 | 6 | Tomar las capturas de pantalla para las evidencias | Continuo |

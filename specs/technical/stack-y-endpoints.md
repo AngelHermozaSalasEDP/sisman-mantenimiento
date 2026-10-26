@@ -13,11 +13,11 @@ Estado: **v1.0** (2026-10-23). Contrato definitivo exportado de Swagger: `docs/a
 | Errores | `ProblemDetails` con códigos estables, `X-Correlation-Id` | ADR-005 |
 | Seguridad | JWT, PBKDF2, perfiles Planificador y Especialista | ADR-006 |
 | Documentación | Swashbuckle (OpenAPI 3) con ejemplos | RNF |
-| Pruebas | xUnit, `WebApplicationFactory`, SQL Server de prueba (contenedor o instancia local) | Fase 5 |
+| Pruebas | xUnit, `WebApplicationFactory`, SQL Server de prueba (instancia local o LocalDB) | Fase 5 |
 | Registro | Serilog a consola con la correlación | RN-54 |
-| Entorno | `docker compose up` levanta SQL Server y la API | RNF-05 |
+| Entorno | SQL Server local o LocalDB; `dotnet run` levanta la API | RNF-05 |
 
-Plan B mientras Docker no esté instalado: SQL Server local; la cadena de conexión viene de variable de entorno y el `docker/docker-compose.yml` se entrega igual.
+Sin Docker (ADR-007): SQL Server local o LocalDB; la cadena de conexión viene de variable de entorno o de user-secrets.
 
 ## 2. Convenciones de la API
 
@@ -69,7 +69,7 @@ Catálogo de códigos en ADR-005. Cada endpoint tiene al menos una prueba de err
 
 ## 6. Orden de implementación
 
-1. Solución, `DbContext`, migración, seed y Docker Compose (domingo 25).
+1. Solución, `DbContext`, migración y seed (domingo 25).
 2. Middleware de errores, correlación y RF-11.
 3. RF-02/03, RF-04 y RF-05 (lunes 26).
 4. RF-07 con el correlativo transaccional y la prueba concurrente (martes 27).

@@ -31,7 +31,7 @@ Prioridad (MoSCoW): **M** imprescindible · **S** deseable · **C** si hay tiemp
 | RNF-02 | **Integridad.** Dos usuarios que generan OT al mismo tiempo no obtienen el mismo número; el número de OT es único por restricción de la base | Prueba concurrente con 20 solicitudes simultáneas sin duplicados |
 | RNF-03 | **Seguridad.** Autenticación JWT; entradas validadas; consultas parametrizadas; ningún secreto en el repositorio ni en el historial | Búsqueda de secretos sin hallazgos; ninguna consulta con texto concatenado |
 | RNF-04 | **Errores consistentes.** Toda falla se devuelve como `ProblemDetails` sin detalles internos, y nunca se informa éxito si la operación falló | Pruebas de error por endpoint |
-| RNF-05 | **Reproducibilidad.** Desde un clon limpio se levanta la base con datos de ejemplo, se compila y se prueba con comandos documentados | `docker compose up` y `dotnet test` sin pasos ocultos |
+| RNF-05 | **Reproducibilidad.** Desde un clon limpio se levanta la base con datos de ejemplo, se compila y se prueba con comandos documentados | `dotnet run` y `dotnet test` sin pasos ocultos |
 | RNF-06 | **Auditoría y trazabilidad.** Cada cambio guarda usuario y fecha; cada solicitud lleva un identificador de correlación en el registro | Revisión de registros en las pruebas de integración |
 
 ## Reglas de negocio

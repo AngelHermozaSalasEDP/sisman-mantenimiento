@@ -163,7 +163,7 @@ Además, dos recorridos HTTP de la demo contra la API y la base reales (39 compr
 
 | Opción | Pasos |
 |---|---|
-| Docker Compose | `cd docker`, copiar `.env.example` a `.env` con las cuatro claves y ejecutar `docker compose up --build`. API en `:8080/swagger` y web en `:8081`. **Escrito pero no ejecutado** (no hay Docker en el equipo de desarrollo) |
+| Ejecución local | Sin Docker (ADR-007). SQL Server local o LocalDB, con los comandos del README. API en `:5300/swagger` y web en `:5400` |
 | Local (camino probado) | SQL Server o LocalDB; configurar con `dotnet user-secrets` las claves `Jwt:Clave`, `ConnectionStrings:Sisman`, `Migraciones:AplicarAlArrancar`, `Semilla:Habilitada`, `Semilla:ClavePlanificador` y `Semilla:ClaveEspecialista`; `dotnet run` en la API (puerto 5300) y en la web (`Api__UrlBase`, puerto 5400) |
 | Pruebas | `dotnet test` (usan LocalDB o `SISMAN_TEST_CONNECTION`) |
 
@@ -187,7 +187,7 @@ El resumen está en `docs/ia/resumen.md`.
 # 12. Limitaciones y mejoras pendientes
 
 1. Reglas a validar con un usuario: efecto de aprobar (RN-15, RN-16), no repetir fecha (RN-23) y transiciones de estado (RN-37).
-2. `docker compose up` sin ejecutar.
+2. Sin Docker: el despliegue es local (ADR-007).
 3. La edición de MP no envía un token de versión del cliente; la concurrencia se detecta solo dentro de la misma solicitud.
 4. Eliminar una fecha no recalcula las fechas del MP.
 5. Sin *refresh token* ni bloqueo de cuenta por intentos fallidos.

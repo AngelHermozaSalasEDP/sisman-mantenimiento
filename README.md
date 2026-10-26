@@ -38,7 +38,7 @@ Contrato completo: [`docs/api/openapi.json`](docs/api/openapi.json). Peticiones 
 | Autenticación | JWT |
 | Documentación de la API | OpenAPI / Swagger |
 | Pruebas | xUnit, `WebApplicationFactory` (119 pruebas) |
-| Entorno local | Docker Compose (SQL Server) |
+| Entorno local | SQL Server local o LocalDB |
 
 ## Estructura
 
@@ -47,24 +47,13 @@ src/            Domain, Application, Infrastructure, Api y Web (web mínima de d
 tests/          UnitTests (dominio), IntegrationTests (API + SQL Server) y WebTests (web con la API simulada)
 specs/          functional/ y technical/
 docs/           alcance, convenciones, trazabilidad, adr/, ia/, arquitectura/, api/
-docker/         Docker Compose (SQL Server 2022 + API + web) y Dockerfile
 ```
 
 ## Cómo ejecutar
 
-Requisitos: .NET SDK 10 y una instancia de SQL Server (Docker, SQL Server local o LocalDB).
+Requisitos: .NET SDK 10 y una instancia de SQL Server (SQL Server local o LocalDB).
 
-**Opción A: Docker Compose**
-
-```
-cd docker
-copy .env.example .env      # y edite las cuatro claves
-docker compose up --build
-```
-
-La API queda en http://localhost:8080/swagger y la web en http://localhost:8081. Al arrancar, la API aplica las migraciones y carga los datos de ejemplo. (El Compose está escrito pero no se ha ejecutado: en el equipo de desarrollo no hay Docker.)
-
-**Opción B: SQL Server local o LocalDB (sin Docker)**
+**SQL Server local o LocalDB**
 
 ```
 cd src/Sisman.Mantenimiento.Api
@@ -98,7 +87,7 @@ Las pruebas de la web no necesitan la API ni la base: usan una API simulada. Las
 
 ## Credenciales de prueba
 
-Los usuarios `planificador` (todas las operaciones) y `especialista` (solo consultas) los crea la semilla con las claves que usted defina (`Semilla:ClavePlanificador` y `Semilla:ClaveEspecialista`, o `CLAVE_PLANIFICADOR` y `CLAVE_ESPECIALISTA` en Docker). Son claves de ejemplo para datos ficticios. **No hay claves, tokens ni cadenas de conexión reales en este repositorio**; el archivo `appsettings.example.json` solo muestra los nombres de los valores.
+Los usuarios `planificador` (todas las operaciones) y `especialista` (solo consultas) los crea la semilla con las claves que usted defina (`Semilla:ClavePlanificador` y `Semilla:ClaveEspecialista`). Son claves de ejemplo para datos ficticios. **No hay claves, tokens ni cadenas de conexión reales en este repositorio**; el archivo `appsettings.example.json` solo muestra los nombres de los valores.
 
 ## Evidencia de uso de IA
 

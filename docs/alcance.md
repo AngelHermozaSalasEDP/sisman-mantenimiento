@@ -30,7 +30,7 @@ Recorte confirmado el 2026-10-23 por el plazo de entrega (31/10/2026). Las espec
 3. Programar fechas de un MP (RF-05).
 4. Generar una OT desde una fecha programada, con número único garantizado por una transacción y probado con 20 solicitudes simultáneas (RF-07).
 5. Consulta paginada de OT y cambio de estado con las transiciones principales (RF-08, RF-09).
-6. API documentada con OpenAPI y entorno local reproducible (Docker Compose; plan B con SQL Server local).
+6. API documentada con OpenAPI y entorno local reproducible (SQL Server local o LocalDB).
 7. **Web mínima de demostración** (proyecto `Sisman.Mantenimiento.Web`, añadida el 2026-10-23): login, lista de MP, programar fecha, generar OT, lista de OT y cambio de estado. Se construye después de RF-08 y RF-09 y se reduce u omite si el plazo lo exige.
 
 ## Ampliación del 2026-10-23
@@ -45,4 +45,4 @@ Las reglas provienen del análisis del sistema original (código, base de datos 
 
 ## Criterio de éxito
 
-Todos los requisitos de `specs/functional/requisitos.md` implementados, con al menos una prueba por criterio de aceptación, la matriz de trazabilidad completa y la API ejecutable desde un clon limpio con `docker compose up`.
+Todos los requisitos de `specs/functional/requisitos.md` implementados, con al menos una prueba por criterio de aceptación, la matriz de trazabilidad completa y la API ejecutable desde un clon limpio con `dotnet run`.

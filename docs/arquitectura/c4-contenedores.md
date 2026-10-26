@@ -7,7 +7,7 @@ Estado: **borrador v0.1** (2026-10-23).
 ```mermaid
 flowchart LR
     cli["Cliente<br/>Swagger UI / peticiones HTTP"]
-    subgraph docker["docker compose"]
+    subgraph local["Equipo de desarrollo"]
         api["<b>Sisman.Mantenimiento.Api</b><br/>ASP.NET Core, .NET 10<br/>API REST + JWT + OpenAPI"]
         db[("<b>SQL Server 2022</b><br/>Esquema propio<br/>creado por migraciones EF Core")]
     end
@@ -18,7 +18,7 @@ flowchart LR
 | Contenedor | Tecnología | Responsabilidad |
 |---|---|---|
 | API | ASP.NET Core 10, controladores, FluentValidation, Swashbuckle | Autenticación, validación de entradas, orquestación de casos de uso, `ProblemDetails` |
-| Base de datos | SQL Server 2022 en Docker (plan B local mientras Docker no esté instalado) | Datos, restricciones, correlativo transaccional |
+| Base de datos | SQL Server 2022 local o LocalDB | Datos, restricciones, correlativo transaccional |
 
 La API es un solo contenedor (no microservicios): el módulo es pequeño y el instructor aún no confirmó si se espera más (consulta pendiente). La arquitectura por capas permite separar servicios después.
 
@@ -69,6 +69,4 @@ src/
 tests/
   Sisman.Mantenimiento.UnitTests/
   Sisman.Mantenimiento.IntegrationTests/   (WebApplicationFactory + SQL Server de prueba)
-docker/
-  docker-compose.yml
 ```

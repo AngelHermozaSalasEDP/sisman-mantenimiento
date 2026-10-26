@@ -49,7 +49,7 @@ Referencias entre proyectos, comprobadas en los `.csproj`:
 
 - Se revisó **todo el historial** (`git log -p --all`) buscando asignaciones de `password`, `pwd`, `secret`, `apikey` y `token` con un valor literal. Único resultado: la constante `ClaimToken = "api_token"`, que es el nombre de un dato, no un secreto.
 - Las claves de ejemplo usadas en el equipo de desarrollo no aparecen en el historial.
-- En el repositorio solo hay marcadores: `appsettings.example.json` y `docker/.env.example`. Las claves de las pruebas automáticas son de prueba y están a la vista en `tests/`.
+- En el repositorio solo hay marcadores: `appsettings.example.json`. Las claves de las pruebas automáticas son de prueba y están a la vista en `tests/`.
 - `.gitignore` excluye `.env`, `appsettings.Development.json` y cualquier otro `appsettings*.json`, salvo los dos de configuración base (sin secretos) y el de ejemplo.
 
 ## 5. Pendientes y limitaciones conocidas
@@ -57,7 +57,7 @@ Referencias entre proyectos, comprobadas en los `.csproj`:
 | # | Tema | Estado |
 |---|---|---|
 | 1 | Un fallo aislado en 1 de 84 pruebas de integración, con la API y la web de desarrollo corriendo a la vez; no se capturó cuál fue | No se repitió en 5 corridas. Registrado en la evidencia de IA 014 |
-| 2 | `docker compose up` no se ejecutó: Docker no está instalado en el equipo de desarrollo | El README indica el camino local como principal |
+| 2 | Docker no se usa en el proyecto (decisión del 2026-10-26, ADR-007) | La ejecución y las pruebas son con SQL Server local o LocalDB |
 | 3 | Cobertura de la web de 59,7 %: las páginas se probaron también con dos recorridos HTTP (39 comprobaciones) que no cuentan en la cobertura | Aceptado |
 | 4 | Paquetes de prueba con versiones más nuevas (`Microsoft.NET.Test.Sdk`, `xunit.runner.visualstudio`, `coverlet.collector`) | Sin vulnerabilidades; se dejan como están para no mover herramientas antes de la entrega |
 | 5 | La edición de MP no envía un token de versión del cliente: la concurrencia se detecta solo dentro de la misma solicitud | Documentado en la evidencia 010 |
