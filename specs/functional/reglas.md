@@ -30,7 +30,7 @@ Marcas: **[heredada]** reproduce el comportamiento del sistema original · **[co
 |---|---|---|---|
 | RN-20 | La fecha de inicio debe ser **posterior a hoy**; lo valida el servidor | [corrige] FE-8: el original lo validaba solo en el navegador | Inicio igual o anterior a hoy → 400 |
 | RN-21 | La fecha de inicio no puede ser posterior a la de fin | [nueva] | Inicio mayor que fin → 400 |
-| RN-22 | Solo se programa fechas para un MP **Aprobado** | MP-5 [a validar] | MP no aprobado → 409 |
+| RN-22 | Solo se programa fechas para un MP **Aprobado**. Un MP aprobado que se edita pasa a **Modificado** y no admite fechas nuevas ni OT hasta que se vuelva a aprobar | MP-5; confirmado con el responsable el 2026-10-26 | MP no aprobado → 409; MP modificado → 409 hasta aprobarlo de nuevo |
 | RN-23 | No se programan dos fechas con el mismo inicio para el mismo MP | [nueva] [decidido 2026-10-26: sí] | Segunda fecha igual → 409 |
 | RN-24 | La fecha nace **sin OT**. Al crearla, el MP actualiza su fecha de inicio y la próxima con el inicio, y su fecha última con el fin | [heredada] FE-1, FE-4 | Alta de fecha → MP con esas fechas |
 | RN-25 | Solo se elimina una fecha que **no tiene OT** | [heredada] estado 0 de FE-5 | Eliminar una fecha con OT → 409 |
