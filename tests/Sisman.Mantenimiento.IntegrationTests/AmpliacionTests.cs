@@ -215,7 +215,7 @@ public class AmpliacionTests(ApiFactory fabrica) : IClassFixture<ApiFactory>
     [Fact(DisplayName = "RF-10/RN-43: el planning cuenta por día solo las fechas sin OT y rellena los días vacíos")]
     public async Task Planning_Cuenta_Fechas_Sin_Ot()
     {
-        var json = await Json(await (await ClienteAsync("especialista")).GetAsync($"/api/v1/planning?desde={Dia(20)}&hasta={Dia(40)}"));
+        var json = await Json(await (await ClienteAsync()).GetAsync($"/api/v1/planning?desde={Dia(20)}&hasta={Dia(40)}"));
         // Semilla: fechas en hoy + 25 a hoy + 32; las de hoy + 25, 26 y 27 tienen OT.
         Assert.Equal(5, json.GetProperty("total").GetInt32());
         var dias = json.GetProperty("dias").EnumerateArray().ToList();
@@ -252,6 +252,10 @@ public class AmpliacionTests(ApiFactory fabrica) : IClassFixture<ApiFactory>
     [Fact(DisplayName = "RF-10: sin fechas el planning da 400")]
     public async Task Planning_Sin_Fechas_Da_400() =>
         Assert.Equal(HttpStatusCode.BadRequest, (await (await ClienteAsync()).GetAsync("/api/v1/planning")).StatusCode);
+
+    [Fact(DisplayName = "RN-03/D2: el Especialista no puede ver el planning (403)")]
+    public async Task Planning_Solo_Para_Planificador() =>
+        Assert.Equal(HttpStatusCode.Forbidden, (await (await ClienteAsync("especialista")).GetAsync($"/api/v1/planning?desde={Dia(20)}&hasta={Dia(40)}")).StatusCode);
 
     // ---------- Mensajes ----------
 

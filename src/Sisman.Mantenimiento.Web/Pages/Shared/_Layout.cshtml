@@ -18,7 +18,10 @@
             <nav>
                 <a href="/mp" class="@(ruta.StartsWith("/mp") ? "activo" : "")">Mantenimientos preventivos</a>
                 <a href="/ot" class="@(ruta.StartsWith("/ot") ? "activo" : "")">Órdenes de trabajo</a>
-                <a href="/planning" class="@(ruta.StartsWith("/planning") ? "activo" : "")">Planning</a>
+                @if (User.IsInRole("Planificador"))
+                {
+                    <a href="/planning" class="@(ruta.StartsWith("/planning") ? "activo" : "")">Planning</a>
+                }
             </nav>
             <form method="post" action="/logout" class="sesion">
                 <span>@User.Identity!.Name · @(User.IsInRole("Planificador") ? "Planificador" : "Especialista")</span>

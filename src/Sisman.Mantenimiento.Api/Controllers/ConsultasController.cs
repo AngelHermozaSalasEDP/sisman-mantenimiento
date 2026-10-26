@@ -30,6 +30,7 @@ public class ConsultasController(ConsultasServicio servicio) : ControllerBase
     /// con filtros opcionales de planta, área, máquina y especialidad.
     /// </summary>
     [HttpGet("planning")]
+    [Authorize(Policy = Politicas.Planificador)]
     [ProducesResponseType<PlanningDto>(StatusCodes.Status200OK)]
     [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")]
     public async Task<ActionResult<PlanningDto>> Planning(

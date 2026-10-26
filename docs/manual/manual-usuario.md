@@ -21,7 +21,8 @@ Cada persona entra con un usuario, y su **perfil** decide qué puede hacer:
 
 | Tarea | Planificador | Especialista |
 |---|:-:|:-:|
-| Ver mantenimientos preventivos, órdenes de trabajo y planning | Sí | Sí |
+| Ver mantenimientos preventivos y órdenes de trabajo | Sí | Sí |
+| Ver el planning | Sí | No |
 | Registrar y editar mantenimientos preventivos | Sí | No |
 | Aprobar mantenimientos preventivos | Sí | No |
 | Programar y eliminar fechas | Sí | No |
@@ -236,7 +237,7 @@ El archivo tiene una fila por OT con su número, estado, prioridad, tipo, descri
 
 # 4. Perfil Especialista
 
-El especialista **consulta**: ve los mismos mantenimientos preventivos, órdenes de trabajo y planning que el planificador, pero sin botones para registrar, editar, aprobar, programar, generar, cambiar estado ni exportar.
+El especialista **consulta**: ve los mismos mantenimientos preventivos y órdenes de trabajo que el planificador, pero sin botones para registrar, editar, aprobar, programar, generar, cambiar estado ni exportar.
 
 ## 4.1 Consultar mantenimientos preventivos
 
@@ -256,7 +257,7 @@ Igual que en 3.9. En el detalle ve el historial de estados, pero no la sección 
 
 ## 4.3 Planning
 
-Igual que en 3.11.
+El planning es solo para el planificador. En el menú del especialista no aparece esta opción.
 
 # 5. Avisos frecuentes
 
