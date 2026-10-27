@@ -56,4 +56,6 @@ Consecuencias que el ADR-007 deja escritas:
 
 ## Captura
 
-Pendiente (opcional): captura del árbol del repositorio sin `docker/`, en `docs/ia/capturas/`.
+![Raíz del repositorio sin la carpeta docker/](capturas/08-arbol-sin-docker.png)
+
+`capturas/08-arbol-sin-docker.png` (2026-10-27): raíz del repositorio con `docs`, `specs`, `src` y `tests`, sin `docker/`. El ADR-007 está en `docs/adr/` y no aparece en esta captura.
