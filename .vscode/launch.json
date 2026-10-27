@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "SISMAN API (5300)",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/src/Sisman.Mantenimiento.Api/Sisman.Mantenimiento.Api.csproj",
+      "launchConfigurationId": "http"
+    },
+    {
+      "name": "SISMAN Web (5400)",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/src/Sisman.Mantenimiento.Web/Sisman.Mantenimiento.Web.csproj",
+      "launchConfigurationId": "http"
+    }
+  ]
+}
