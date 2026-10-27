@@ -23,8 +23,9 @@ public class PlanningModel(ApiCliente api) : PaginaBase(api)
 
     public string TituloMes => Cultura.TextInfo.ToTitleCase(Primero.ToString("MMMM yyyy", Cultura));
 
-    public async Task OnGetAsync(CancellationToken ct)
+    public async Task<IActionResult> OnGetAsync(CancellationToken ct)
     {
+        if (!EsPlanificador) return Forbid();
         var hoy = DateOnly.FromDateTime(DateTime.Today);
         Primero = DateOnly.TryParseExact(Mes, "yyyy-MM", out var m) ? m : new DateOnly(hoy.Year, hoy.Month, 1);
         Mes = Primero.ToString("yyyy-MM");
@@ -38,6 +39,7 @@ public class PlanningModel(ApiCliente api) : PaginaBase(api)
         {
             ErrorCarga = e.Mensaje;
         }
+        return Page();
     }
 
     public string EnlaceMes(int desplazamiento) =>

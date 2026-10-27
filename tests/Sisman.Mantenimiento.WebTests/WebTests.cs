@@ -189,7 +189,7 @@ public class WebTests(WebFactory fabrica) : IClassFixture<WebFactory>
     public async Task Planning_Muestra_Calendario()
     {
         var http = Cliente();
-        await LoginAsync(http, "especialista", ApiFalsa.ClaveBuena);
+        await LoginAsync(http, "planificador", ApiFalsa.ClaveBuena);
         var r = await http.GetAsync("/planning?mes=2026-11");
         Assert.Equal(HttpStatusCode.OK, r.StatusCode);
         var html = await r.Content.ReadAsStringAsync();
@@ -197,6 +197,15 @@ public class WebTests(WebFactory fabrica) : IClassFixture<WebFactory>
         Assert.Contains("3 programados en el mes", html);
         Assert.Contains("<span class=\"cantidad\">3</span>", html);
         Assert.Contains(fabrica.Api.Llamadas, l => l.StartsWith("GET /api/v1/planning?desde=2026-11-01&hasta=2026-11-30"));
+    }
+
+    [Fact(DisplayName = "RF-10: el especialista no abre el planning y no se llama a la API")]
+    public async Task Planning_Se_Cierra_Al_Especialista()
+    {
+        var http = Cliente();
+        await LoginAsync(http, "especialista", ApiFalsa.ClaveBuena);
+        Assert.Equal(HttpStatusCode.Redirect, (await http.GetAsync("/planning?mes=2026-11")).StatusCode);
+        Assert.DoesNotContain(fabrica.Api.Llamadas, l => l.Contains("/api/v1/planning"));
     }
 
     [Fact(DisplayName = "RF-01: el planificador abre el formulario de alta con las listas; el especialista no")]
