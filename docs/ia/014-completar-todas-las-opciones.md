@@ -50,6 +50,8 @@ Pendiente: probar las pantallas nuevas en el navegador y confirmar las cuatro de
 
 **Nota (2026-10-28):** el total de este registro (119 pruebas) es el de su fecha; hoy son 121.
 
+**Fallo intermitente, comprobación (2026-10-28):** 10 corridas seguidas de las pruebas de integración, con el resultado de cada prueba guardado: 85 de 85 en las 10 (850 ejecuciones, sin fallos). Diferencia con el 23/10: esta vez la API y la web de desarrollo no estaban corriendo, así que no se reprodujeron las condiciones exactas del fallo. Si vuelve a ocurrir, el registro por prueba dirá cuál fue.
+
 ## Capturas
 
 - [01 — 121 pruebas en verde](capturas/01-pruebas-121-verdes.png)
