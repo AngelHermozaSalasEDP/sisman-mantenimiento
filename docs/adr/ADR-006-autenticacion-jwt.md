@@ -5,7 +5,7 @@
 
 ## Contexto
 
-En el sistema original, cualquier usuario con sesión ve todo y 9 de 11 pantallas estaban abiertas sin sesión. El curso pide seguridad básica con JWT. La seguridad real del sistema original depende de una base y de servicios de la empresa que no forman parte de este repositorio.
+En el sistema original, cualquier usuario con sesión ve todo y las pantallas de SISMAN se abrían sin iniciar sesión (de las probadas, solo 2 pedían login). El curso pide seguridad básica con JWT. La seguridad real del sistema original depende de una base y de servicios de la empresa que no forman parte de este repositorio.
 
 ## Decisión
 

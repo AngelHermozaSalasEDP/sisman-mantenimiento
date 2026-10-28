@@ -8,7 +8,7 @@ Marcas: **[heredada]** reproduce el comportamiento del sistema original · **[co
 
 | ID | Regla | Origen | Prueba prevista |
 |---|---|---|---|
-| RN-01 | Toda operación, salvo el inicio de sesión, exige un token válido; sin token responde 401 | [corrige] el original dejaba abiertas 9 de 11 pantallas | Cada endpoint sin token → 401 |
+| RN-01 | Toda operación, salvo el inicio de sesión, exige un token válido; sin token responde 401 | [corrige] el original dejaba abiertas sin sesión las pantallas de SISMAN (de las probadas, solo 2 pedían login) | Cada endpoint sin token → 401 |
 | RN-02 | El token vence a los 30 minutos | [nueva] | Token vencido → 401 |
 | RN-03 | Hay dos perfiles: **Planificador** (todas las operaciones) y **Especialista** (solo consultas: RF-02, RF-08) | Validación con el usuario: el especialista registra avance, el planificador programa | Especialista que intenta crear una OT → 403 |
 
