@@ -38,4 +38,4 @@ Análisis de un sistema grande en poco tiempo, comparación automática de respu
 3. Las decisiones destructivas (reescribir el historial) se piden, no se toman (004).
 4. Añadir archivos por nombre, no por carpeta (006).
 
-*Capturas en `capturas/` (2026-10-27): 01 pruebas (121 en verde), 02 Swagger, 03 y 06 planning, 04 lista de MP del planificador, 05 validación al editar, 07 sesión del especialista y 08 árbol sin Docker. 2026-10-28: 09 mensaje del instructor con el índice sugerido para la presentación y 03 reemplazada. Pendiente: entradas por cada tarea de construcción.*
+*Capturas en `capturas/` (2026-10-27): 01 pruebas (121 en verde), 02 Swagger, 03 y 06 planning, 04 lista de MP del planificador, 05 validación al editar, 07 sesión del especialista y 08 árbol sin Docker. 2026-10-28: 09 respuesta del instructor del 24/10 (evidencia 016) y 03 sin la barra del navegador. Pendiente: entradas por cada tarea de construcción.*

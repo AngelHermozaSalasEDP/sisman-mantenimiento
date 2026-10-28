@@ -40,10 +40,12 @@ La recomendación final del instructor fue documentar bien las especificaciones 
 ## Revisión humana
 
 - Se cruzó cada fila con `Requisitos-para-aprobar.md` y con la estructura de entrega que pidió el instructor. La única diferencia con esa estructura es la carpeta `docker/`, ausente por decisión.
-- La columna «Respuesta del instructor» resume el mensaje recibido; la columna «Efecto en el proyecto» es interpretación del asistente. **Pendiente del responsable:** confirmar que la primera columna reproduce fielmente el mensaje del instructor.
+- La columna «Respuesta del instructor» resume el mensaje recibido; la columna «Efecto en el proyecto» es interpretación del asistente. **Cotejada con el mensaje original el 2026-10-28** (captura 09): la primera columna lo resume con fidelidad. Única omisión: además del punto 10, los puntos 3 («base de datos con datos ficticios/ejemplo en Docker») y 11 («esquema propio en Docker») también mencionan Docker; no cambia la decisión del ADR-007.
 - Las preguntas 3 y 11 de la consulta presuponían Docker. Se dejan como se enviaron, porque documentan lo que se preguntó.
 - Riesgo abierto: si el instructor exige `docker/` al evaluar, hay que revisar el ADR-007.
 
 ## Captura
 
-Pendiente (recomendada): captura del mensaje original del instructor, si existe, en `docs/ia/capturas/`. Es la mejor prueba del contenido de la respuesta. Tape antes cualquier dato personal que no haga falta.
+![Respuesta del instructor, puntos 1 a 11](capturas/09-mensaje-instructor.png)
+
+`capturas/09-mensaje-instructor.png` (2026-10-28): mensaje original del instructor con las respuestas a los puntos 1 a 11. El responsable quitó los datos personales antes de guardarla.
