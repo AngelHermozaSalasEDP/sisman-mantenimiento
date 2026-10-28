@@ -2,7 +2,7 @@
 
 Proyecto integrador del curso *Agentic Software Development (.NET 10)*. Es el módulo central de la modernización del sistema SISMAN (gestión de mantenimiento de una editora): **mantenimiento preventivo (MP) → fecha programada → orden de trabajo (OT)**.
 
-> **Estado (2026-10-27):** los 12 requisitos funcionales y los 6 no funcionales están implementados y probados: API REST (16 operaciones) y web de demostración. 120 pruebas en verde; 0 advertencias. Ver la [matriz de trazabilidad](docs/trazabilidad.md) y el [informe de calidad](docs/calidad.md).
+> **Estado (2026-10-28):** los 12 requisitos funcionales y los 6 no funcionales están implementados y probados: API REST (16 operaciones) y web de demostración. 121 pruebas en verde; 0 advertencias. Ver la [matriz de trazabilidad](docs/trazabilidad.md) y el [informe de calidad](docs/calidad.md).
 
 ## Alcance
 
@@ -37,7 +37,7 @@ Contrato completo: [`docs/api/openapi.json`](docs/api/openapi.json). Peticiones 
 | Validación y errores | FluentValidation, ProblemDetails |
 | Autenticación | JWT |
 | Documentación de la API | OpenAPI / Swagger |
-| Pruebas | xUnit, `WebApplicationFactory` (120 pruebas) |
+| Pruebas | xUnit, `WebApplicationFactory` (121 pruebas) |
 | Entorno local | SQL Server local o LocalDB |
 
 ## Estructura

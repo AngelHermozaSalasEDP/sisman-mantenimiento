@@ -3,7 +3,7 @@
 ## Preparación (antes de presentar)
 
 1. Base de ejemplo: la semilla crea 30 MP, 3 OT, 2 usuarios y catálogos. Para empezar limpio, borre la base `SismanMantenimiento` y deje que la API la recree al arrancar.
-2. Levante la API (puerto 5300) con las claves de `user-secrets` y la web (puerto 5400), como indica el README.
+2. Levante la API (puerto 5300) con las claves de `user-secrets` y la web (puerto 5400), como indica el README. La secuencia completa, probada paso a paso el 2026-10-27, está en el documento 40 «Secuencia de ejecución del sistema» v1.3 (carpeta `05 Documentos` del proyecto de modernización; no forma parte de este repositorio).
 3. Abra en pestañas: http://localhost:5400/login y http://localhost:5300/swagger (plan B).
 4. Inicie sesión **justo antes** de empezar: el token dura 30 minutos.
 5. Tenga a mano las claves de prueba de `planificador` y `especialista`.
@@ -24,7 +24,7 @@
 | 10 | **Órdenes de trabajo** → **Exportar a Excel** | Se descarga el `.xlsx` | RF-12 |
 | 11 | Salir e iniciar sesión como `especialista` | Ve listas y detalles, pero no hay botones de escritura | RN-03 |
 
-Mensaje de cierre de la demo: «Lo que acaban de ver está cubierto por 119 pruebas automáticas; la más importante genera 20 OT a la vez y comprueba que no se repite ningún número.»
+Mensaje de cierre de la demo: «Lo que acaban de ver está cubierto por 121 pruebas automáticas; la más importante genera 20 OT a la vez y comprueba que no se repite ningún número.»
 
 ## Plan B
 

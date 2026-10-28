@@ -19,7 +19,7 @@ Este plan es la ruta que sigue el curso: *especificar → diseñar → implement
 
 | Fase del curso | Estado | Qué falta |
 |---|---|---|
-| 0 Alcance | Casi cerrada | Respuesta del instructor, Docker disponible, rotar la clave expuesta del repositorio de modernización |
+| 0 Alcance | Casi cerrada | Respuesta del instructor, Docker disponible (descartado el 2026-10-26, ADR-007), rotar la clave expuesta del repositorio de modernización |
 | 1 Especificación | Parcial: alcance y requisitos en borrador | Historias, casos de uso, reglas `RN-xx`, specs técnicas, matriz completa |
 | 2 Arquitectura | ADR-001 y ADR-002 | Modelo de dominio, ERD, C4, otros 2 ADR, OpenAPI borrador |
 | 3 a 5 | No empezadas | Todo el código y las pruebas |
@@ -48,7 +48,7 @@ Estados: ☐ pendiente · ◐ en curso · ☑ hecho. Los días son por persona. 
 | C-03 | Cancelada (ADR-007): Docker no se usa en el proyecto | Captura en `docs/ia/capturas/` | 0,5 | — |
 | C-04 | Congelar el alcance con la respuesta del instructor | `docs/alcance.md` v1.0 | 0,25 | C-02 |
 
-**Hecho cuando:** el instructor respondió, Docker corre y el alcance quedó congelado.
+**Hecho cuando:** el instructor respondió, Docker corre y el alcance quedó congelado. *(Nota 2026-10-28: Docker se descartó, ADR-007; la fase se cerró sin él.)*
 
 ## Fase 1 — Especificación SDD (4 a 5 días) · peso 25 %
 

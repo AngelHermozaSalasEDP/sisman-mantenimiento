@@ -15,6 +15,8 @@ El curso exige SQL Server, MySQL o PostgreSQL con Entity Framework Core, y migra
 3. La generación del número de OT usa una **transacción** de EF Core con un correlativo protegido por restricción de unicidad.
 4. Cualquier operación que en el sistema original dependa de un procedimiento almacenado se reimplementa en C# y se prueba; no se llama a procedimientos del sistema original.
 
+> **Nota (2026-10-28):** el proyecto no usa Docker; ver [ADR-007](ADR-007-sin-docker.md). La base es SQL Server local o LocalDB y se ejecuta con `dotnet run`.
+
 ## Alternativas descartadas
 
 | Alternativa | Por qué no |
@@ -25,7 +27,7 @@ El curso exige SQL Server, MySQL o PostgreSQL con Entity Framework Core, y migra
 
 ## Consecuencias
 
-- (+) Cumple el mínimo del curso, el proyecto se clona y se ejecuta con `docker compose up`, y las pruebas de integración usan una base propia.
+- (+) Cumple el mínimo del curso, el proyecto se clona y se ejecuta con `docker compose up` (sustituido por `dotnet run` con SQL Server local o LocalDB, ADR-007), y las pruebas de integración usan una base propia.
 - (+) El correlativo de OT queda dentro de una transacción con restricción de unicidad.
 - (–) El esquema del módulo queda separado del de la base real; alinearlos o migrar datos después es trabajo aparte.
 - (–) Hay que reimplementar en C# la lógica de los procedimientos que el módulo necesite.

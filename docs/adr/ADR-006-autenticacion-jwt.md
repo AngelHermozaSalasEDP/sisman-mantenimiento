@@ -27,6 +27,6 @@ En el sistema original, cualquier usuario con sesión ve todo y 9 de 11 pantalla
 
 ## Consecuencias
 
-- (+) Reproducible con `docker compose up`; el 401/403 se prueba sin servicios externos.
+- (+) Reproducible con `docker compose up` (sustituido por `dotnet run` con SQL Server local o LocalDB, ADR-007); el 401/403 se prueba sin servicios externos.
 - (–) No hay gestión de usuarios (alta, cambio de clave) en la API; el administrador técnico queda fuera del alcance.
 - (–) Un token robado vale 30 minutos; no hay revocación.

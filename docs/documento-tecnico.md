@@ -16,7 +16,7 @@ El sistema original tenía cuatro problemas que este módulo resuelve y prueba:
 | Las listas de OT pesaban más de 1 MB | Paginación en el servidor | 22,9 KB por página con 26 003 OT |
 | 9 de 11 pantallas abiertas sin sesión | Autenticación exigida por defecto y dos perfiles | 401 y 403 probados en cada operación |
 
-**Resultado:** 12 requisitos funcionales y 6 no funcionales implementados; API REST con 16 operaciones; web de demostración; 119 pruebas automáticas en verde; 0 advertencias de compilación.
+**Resultado:** 12 requisitos funcionales y 6 no funcionales implementados; API REST con 16 operaciones; web de demostración; 121 pruebas automáticas en verde; 0 advertencias de compilación.
 
 # 2. Alcance y requisitos
 

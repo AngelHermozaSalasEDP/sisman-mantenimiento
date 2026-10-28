@@ -1,20 +1,20 @@
 # Informe de calidad
 
-Fecha: **2026-10-23** · Rama `fase6/completar` · Medido en el equipo de desarrollo (Windows, .NET SDK 10.0.402, SQL Server LocalDB).
+Fecha: **2026-10-28** (actualiza la medición del 2026-10-23) · Rama `main` · Medido en el equipo de desarrollo (Windows, .NET SDK 10.0.402, SQL Server LocalDB).
 
 ## 1. Resumen
 
 | Aspecto | Resultado |
 |---|---|
 | Compilación | **0 errores, 0 advertencias** (`dotnet build`) |
-| Pruebas | **119 en verde**: 25 de dominio, 84 de integración (API + SQL Server), 10 de la web |
+| Pruebas | **121 en verde**: 25 de dominio, 85 de integración (API + SQL Server), 11 de la web |
 | Estabilidad | 5 corridas completas seguidas sin fallos; 1 fallo aislado no reproducido (sección 5) |
-| Cobertura de líneas | Dominio 97,6 %, Aplicación 99,3 %, API 98,0 %, Infraestructura 95,9 % (sin migraciones), Web 59,7 % |
-| Rendimiento (RNF-01) | 13 a 47 ms y 22,9 KB por página con 26 003 OT (límite 2 s y 200 KB) |
+| Cobertura de líneas | Dominio 97,6 %, Aplicación 99,3 %, API 98,0 %, Infraestructura 95,9 % (sin migraciones), Web 60,1 % (medida el 2026-10-28) |
+| Rendimiento (RNF-01) | 13 a 47 ms y 22,9 KB por página con 26 003 OT (límite 2 s y 200 KB); medido el 2026-10-23, la prueba sigue en verde el 2026-10-28 |
 | Concurrencia (RNF-02) | 20 solicitudes simultáneas sin números repetidos; la prueba detecta el defecto del sistema original (prueba de mutación) |
 | Paquetes con vulnerabilidades conocidas | **Ninguno**, incluidas dependencias transitivas |
 | Secretos en el repositorio y su historial | **Ninguno** (sección 4) |
-| Clon limpio | Compila, pruebas en verde y la web arranca sin pasos ocultos |
+| Clon limpio | Compila, pruebas en verde y la web arranca sin pasos ocultos (2026-10-23; se repite antes de la entrega) |
 
 ## 2. Arquitectura
 
@@ -47,7 +47,7 @@ Referencias entre proyectos, comprobadas en los `.csproj`:
 
 ## 4. Búsqueda de secretos
 
-- Se revisó **todo el historial** (`git log -p --all`) buscando asignaciones de `password`, `pwd`, `secret`, `apikey` y `token` con un valor literal. Único resultado: la constante `ClaimToken = "api_token"`, que es el nombre de un dato, no un secreto.
+- Se revisó **todo el historial** (`git log -p --all`; última revisión el 2026-10-28) buscando asignaciones de `password`, `pwd`, `secret`, `apikey` y `token` con un valor literal. Único resultado: la constante `ClaimToken = "api_token"`, que es el nombre de un dato, no un secreto.
 - Las claves de ejemplo usadas en el equipo de desarrollo no aparecen en el historial.
 - En el repositorio solo hay marcadores: `appsettings.example.json`. Las claves de las pruebas automáticas son de prueba y están a la vista en `tests/`.
 - `.gitignore` excluye `.env`, `appsettings.Development.json` y cualquier otro `appsettings*.json`, salvo los dos de configuración base (sin secretos) y el de ejemplo.
@@ -58,10 +58,10 @@ Referencias entre proyectos, comprobadas en los `.csproj`:
 |---|---|---|
 | 1 | Un fallo aislado en 1 de 84 pruebas de integración, con la API y la web de desarrollo corriendo a la vez; no se capturó cuál fue | No se repitió en 5 corridas. Registrado en la evidencia de IA 014 |
 | 2 | Docker no se usa en el proyecto (decisión del 2026-10-26, ADR-007) | La ejecución y las pruebas son con SQL Server local o LocalDB |
-| 3 | Cobertura de la web de 59,7 %: las páginas se probaron también con dos recorridos HTTP (39 comprobaciones) que no cuentan en la cobertura | Aceptado |
+| 3 | Cobertura de la web de 60,1 %: las páginas se probaron también con dos recorridos HTTP (39 comprobaciones) que no cuentan en la cobertura | Aceptado |
 | 4 | Paquetes de prueba con versiones más nuevas (`Microsoft.NET.Test.Sdk`, `xunit.runner.visualstudio`, `coverlet.collector`) | Sin vulnerabilidades; se dejan como están para no mover herramientas antes de la entrega |
 | 5 | La edición de MP no envía un token de versión del cliente: la concurrencia se detecta solo dentro de la misma solicitud | Documentado en la evidencia 010 |
-| 6 | Reglas a validar con un usuario: RN-15, RN-16, RN-23, RN-37 | Pendiente del responsable |
+| 6 | Reglas a validar con un usuario: RN-15, RN-16, RN-23, RN-37 | Decididas por el responsable el 2026-10-26 (ver `specs/functional/reglas.md`) |
 
 ## 6. Cómo repetir las mediciones
 
