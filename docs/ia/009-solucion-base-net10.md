@@ -33,3 +33,9 @@ El asistente creó la solución (4 proyectos y 2 de pruebas), las reglas en el d
 ## Revisión humana
 
 Pendiente: el responsable debe revisar el modelo de datos y las reglas del dominio (en especial RN-37, las transiciones de estado, que siguen a validar con un usuario).
+
+**Revisión del responsable (2026-10-28, checklist 41):** revisó el modelo de datos y las reglas del dominio, sin cambios; RN-37 confirmada (ver 007). «No verificado: docker compose up» queda cerrado por la evidencia 015 (ADR-007); el texto de arriba se conserva como registro de su fecha.
+
+## Capturas
+
+- [01 — 121 pruebas en verde](capturas/01-pruebas-121-verdes.png) (2026-10-27)

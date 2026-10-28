@@ -24,3 +24,5 @@ Informe: documento 24 del repositorio de modernización (`70d69b3`). No se modif
 ## Revisión humana
 
 El responsable decidió trabajar en un repositorio separado y limpio (ADR-002).
+
+**Revisión del responsable (2026-10-28, checklist 41):** la rotación de la clave y la limpieza del historial del repositorio de modernización **siguen pendientes**; quedan para entregarlas al DBA. Este repositorio no tiene archivos del sistema original. Búsqueda de secretos en este repositorio y su historial (2026-10-28): limpia; solo aparece la constante `ClaimToken`, que es el nombre de un dato.

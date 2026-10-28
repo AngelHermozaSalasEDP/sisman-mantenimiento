@@ -35,7 +35,7 @@ El sistema original tenía cuatro problemas que este módulo resuelve y prueba:
 | RF-11 | Iniciar sesión con JWT | M |
 | RF-12 | Exportar OT a Excel | C |
 
-Las especificaciones completas están en `specs/functional/`: requisitos, 12 historias con criterios Dado/Cuando/Entonces, 9 casos de uso y 34 reglas `RN-xx`, cada una con su origen (heredada, corrige un defecto, nueva o a validar). La matriz `docs/trazabilidad.md` enlaza RF → historia → caso de uso → reglas → endpoint → clase → prueba.
+Las especificaciones completas están en `specs/functional/`: requisitos, 12 historias con criterios Dado/Cuando/Entonces, 9 casos de uso y 35 reglas `RN-xx` (RN-17 se numeró el 2026-10-28), cada una con su origen (heredada, corrige un defecto, nueva o a validar). La matriz `docs/trazabilidad.md` enlaza RF → historia → caso de uso → reglas → endpoint → clase → prueba.
 
 **Fuera del módulo:** reportes en PDF, rotativa, asignación y consumo de personal, informe de falla, plan de trabajo, seguridad compartida con otros sistemas y migración de datos del original.
 

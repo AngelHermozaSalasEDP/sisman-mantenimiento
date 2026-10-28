@@ -37,3 +37,7 @@ El asistente agregó `GET /api/v1/ordenes-trabajo` (filtros por número, tipo, e
 ## Revisión humana
 
 Pendiente: revisión del diff y de las tres decisiones.
+
+**Revisión del responsable (2026-10-28, checklist 41):** acepta el filtro de OT por fecha objetivo y que el historial se vea solo en el detalle; RN-37 confirmada (ver 007).
+
+**Actualización (2026-10-28):** RNF-01 ya se probó: commit `119ea71`, con 26 000 OT la página responde en menos de 2 s y pesa menos de 200 KB (detalle en `docs/calidad.md`).

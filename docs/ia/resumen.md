@@ -37,5 +37,8 @@ Análisis de un sistema grande en poco tiempo, comparación automática de respu
 2. Un resultado de «éxito» en pantalla no es una prueba (002).
 3. Las decisiones destructivas (reescribir el historial) se piden, no se toman (004).
 4. Añadir archivos por nombre, no por carpeta (006).
+5. El entorno se decide el primer día: la decisión sobre Docker cambió tres veces y dejó planes superados (015).
+6. El responsable corrige a la IA: la IA recomendó conservar `docker/` y se eligió quitarlo (015).
+7. Se verifica contra el código y la pantalla, no contra lo que dice un documento (013, 014).
 
 *Capturas en `capturas/` (2026-10-27): 01 pruebas (121 en verde), 02 Swagger, 03 y 06 planning, 04 lista de MP del planificador, 05 validación al editar, 07 sesión del especialista y 08 árbol sin Docker. 2026-10-28: 09 respuesta del instructor del 24/10 (evidencia 016) y 03 sin la barra del navegador. Pendiente: entradas por cada tarea de construcción.*

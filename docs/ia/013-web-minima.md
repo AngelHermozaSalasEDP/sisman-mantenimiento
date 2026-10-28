@@ -31,3 +31,14 @@ El asistente creó el proyecto Razor Pages con: cliente tipado de la API que lee
 **Aceptado.** Pendiente de revisión humana: probar la web en un navegador (el recorrido fue por HTTP, no se vio la pantalla) y revisar el estilo.
 
 **No verificado:** el Compose con la web (Docker no está instalado). Los mensajes de transición prohibida usan el nombre interno del estado (por ejemplo «EnProgramacion»), sin tildes ni espacios.
+
+## Revisión humana
+
+**Revisión del responsable (2026-10-28, checklist 41):** vio las pantallas en el navegador y el estilo le parece aceptable. Los mensajes de transición ya se ven con el nombre legible del estado (commit `5b3c877`).
+
+## Capturas
+
+- [04 — lista de MP del planificador](capturas/04-lista-mp.png)
+- [05 — validación al registrar un MP](capturas/05-alta-mp-validacion.png)
+- [06 — planning del mes](capturas/06-planning-mes.png)
+- [07 — el especialista que abre /planning vuelve al login](capturas/07-especialista-sin-planning.png) (reemplazada el 2026-10-28)

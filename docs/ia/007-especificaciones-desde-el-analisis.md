@@ -26,3 +26,5 @@ El asistente leyó el análisis del sistema original (reglas de MP, fechas y OT,
 ## Revisión humana
 
 Pendiente: el responsable debe revisar las reglas marcadas «a validar» con un usuario (tarea C-13) antes de congelar el alcance.
+
+**Revisión del responsable (2026-10-28, checklist 41):** confirma RN-15, RN-16, RN-22, RN-23 y RN-37 tal como están escritas e implementadas (la decisión es del responsable, 2026-10-26). La respuesta cierra también el punto de RN-37 en las evidencias 008, 009 y 012.

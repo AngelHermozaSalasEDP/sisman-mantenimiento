@@ -49,3 +49,5 @@ La recomendación final del instructor fue documentar bien las especificaciones 
 ![Respuesta del instructor, puntos 1 a 11](capturas/09-mensaje-instructor.png)
 
 `capturas/09-mensaje-instructor.png` (2026-10-28): mensaje original del instructor con las respuestas a los puntos 1 a 11. El responsable quitó los datos personales antes de guardarla.
+
+**Revisión del responsable (2026-10-28, checklist 41):** confirma que la tabla reproduce fielmente el mensaje del instructor y se queda con la excepción de Docker (ver la evidencia 015).

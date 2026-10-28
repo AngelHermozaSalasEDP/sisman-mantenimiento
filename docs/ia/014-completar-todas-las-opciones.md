@@ -45,3 +45,14 @@
 ## Revisión humana
 
 Pendiente: probar las pantallas nuevas en el navegador y confirmar las cuatro decisiones.
+
+**Revisión del responsable (2026-10-28, checklist 41):** probó en el navegador el alta, la edición, la exportación y el planning, y acepta las cuatro decisiones (eliminar una fecha no recalcula las fechas del MP; planning de hasta 92 días; exportación de hasta 10 000 filas; listas agrupadas por máquina). El fallo intermitente **no se ha repetido**.
+
+**Nota (2026-10-28):** el total de este registro (119 pruebas) es el de su fecha; hoy son 121.
+
+## Capturas
+
+- [01 — 121 pruebas en verde](capturas/01-pruebas-121-verdes.png)
+- [05 — validación al registrar un MP](capturas/05-alta-mp-validacion.png)
+- [06 — planning del mes](capturas/06-planning-mes.png)
+- [07 — el especialista que abre /planning vuelve al login](capturas/07-especialista-sin-planning.png)

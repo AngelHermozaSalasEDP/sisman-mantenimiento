@@ -33,3 +33,9 @@ El asistente implementó `OtServicio.GenerarAsync` dentro de una transacción ej
 ## Revisión humana
 
 Pendiente: revisión del diff por el responsable.
+
+**Revisión del responsable (2026-10-28, checklist 41):** revisó el código del correlativo y la prueba de 20 solicitudes (commit `1445bfe`). Acepta sin prueba adicional los dos casos sin prueba específica (error 500 si falla la unicidad; MP no aprobado después de tomar el número).
+
+## Capturas
+
+- [01 — 121 pruebas en verde](capturas/01-pruebas-121-verdes.png) (2026-10-27)

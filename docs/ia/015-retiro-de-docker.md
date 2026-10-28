@@ -59,3 +59,5 @@ Consecuencias que el ADR-007 deja escritas:
 ![Raíz del repositorio sin la carpeta docker/](capturas/08-arbol-sin-docker.png)
 
 `capturas/08-arbol-sin-docker.png` (2026-10-27): raíz del repositorio con `docs`, `specs`, `src` y `tests`, sin `docker/`. El ADR-007 está en `docs/adr/` y no aparece en esta captura.
+
+**Revisión del responsable (2026-10-28, checklist 41):** en sus palabras: «Docker quedó fuera luego de consultar al profesor». Se registra como lo dice el responsable. La respuesta escrita del instructor que está en el repositorio (24/10, evidencia 016) describe Docker como «muy recomendado y parte de la estructura esperada»; la consulta posterior no tiene registro escrito aquí. Las notas en ADR-001, ADR-006 y `plan-de-trabajo.md` se añadieron el 2026-10-28 (commit `28da902`).

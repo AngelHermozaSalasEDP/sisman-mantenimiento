@@ -35,3 +35,5 @@ El asistente añadió el servicio de aplicación `MpServicio`, los validadores (
 ## Revisión humana
 
 Pendiente: el responsable debe revisar las cuatro decisiones de arriba.
+
+**Revisión del responsable (2026-10-28, checklist 41):** acepta las cuatro decisiones: filtro por fecha de inicio, frecuencia como entero 1 a 4 y estado como texto, filtro de código «contiene» y validación de referencias, que pasa a ser la regla **RN-17**. Acepta la limitación de concurrencia en la edición (sin token de versión del cliente) y se dirá así en la exposición.

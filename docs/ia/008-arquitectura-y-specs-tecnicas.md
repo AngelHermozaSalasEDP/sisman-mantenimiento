@@ -30,3 +30,5 @@ El asistente propuso el modelo de dominio y el ERD (11 tablas, con restricciones
 ## Revisión humana
 
 El responsable aceptó los ADR-003 a ADR-006 el 2026-10-23. Pendiente: revisar el modelo antes de crear las migraciones.
+
+**Revisión del responsable (2026-10-28, checklist 41):** RF-03 es «Editar MP». El motor de base de datos queda cerrado con la respuesta del instructor (evidencia 016). Revisó el modelo (ERD) y las reglas del dominio y no pide cambios.
