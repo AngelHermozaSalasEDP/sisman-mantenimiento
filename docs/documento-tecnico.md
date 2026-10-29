@@ -1,6 +1,6 @@
 ---
 title: "Documento técnico: SISMAN Mantenimiento"
-subtitle: "Proyecto integrador · Agentic Software Development (.NET 10) · Versión 1.0 · 2026-10-23"
+subtitle: "Proyecto integrador · Agentic Software Development (.NET 10) · Versión 1.1 · 2026-10-29"
 ---
 
 # 1. Resumen
@@ -109,7 +109,7 @@ Prefijo `/api/v1`, JSON en camelCase y fechas ISO 8601. Paginación con `pagina`
 
 **Errores (ADR-005).** Todo error es `application/problem+json` con `codigo`, `detail`, `traceId` y `correlationId`. Ejemplos de código: `validacion.error` (400, con `errors` por campo), `auth.credenciales-invalidas` (401), `mp.no-encontrado` (404), `mp.ya-aprobado`, `fecha.con-ot` y `ot.transicion-invalida` (409), y `error.interno` (500, sin detalles). Cada respuesta lleva `X-Correlation-Id`, que también aparece en el registro.
 
-**Estados de la OT (RN-37, a validar con un usuario).** Solicitud → En programación → Pendiente; Pendiente → Concluido o Anulación; Anulación → Concluido por anulación; Concluido → Pendiente (reapertura). La OT generada nace en Pendiente.
+**Estados de la OT (RN-37, decidida por el responsable; falta validarla con usuarios de planta).** Solicitud → En programación → Pendiente; Pendiente → Concluido o Anulación; Anulación → Concluido por anulación; Concluido → Pendiente (reapertura). La OT generada nace en Pendiente.
 
 # 6. Web de demostración
 
@@ -132,6 +132,7 @@ Razor Pages en `src/Sisman.Mantenimiento.Web`. Guarda el token de la API dentro 
 | ADR-004 | FluentValidation en la capa de aplicación; reglas de estado en el dominio | DataAnnotations o validar en controladores |
 | ADR-005 | `ProblemDetails` con códigos estables y middleware global | Formato propio `{ ok, mensaje }` |
 | ADR-006 | JWT propio de 30 minutos, PBKDF2, dos perfiles y autenticación por defecto | Reutilizar la seguridad de la empresa (no reproducible) |
+| ADR-007 | Sin Docker: SQL Server local o LocalDB y `dotnet run` | Mantener `docker/` sin haberlo ejecutado |
 
 Los textos completos están en `docs/adr/`.
 
@@ -140,9 +141,9 @@ Los textos completos están en `docs/adr/`.
 | Proyecto | Pruebas | Qué cubre |
 |---|---|---|
 | `UnitTests` | 25 | Reglas del dominio: RN-10 a RN-16, RN-20 a RN-25, RN-30, RN-31, RN-35, RN-37, RN-38 |
-| `IntegrationTests` | 84 | La API completa contra una base SQL Server propia por clase (se crea y se borra): cada endpoint, sus errores, permisos, concurrencia y rendimiento |
-| `WebTests` | 10 | Las páginas contra una API simulada: sesión, perfiles, errores, antifalsificación, planning y exportación |
-| **Total** | **119** | 0 fallos en 5 corridas completas seguidas |
+| `IntegrationTests` | 85 | La API completa contra una base SQL Server propia por clase (se crea y se borra): cada endpoint, sus errores, permisos, concurrencia y rendimiento |
+| `WebTests` | 11 | Las páginas contra una API simulada: sesión, perfiles, errores, antifalsificación, planning y exportación |
+| **Total** | **121** | 0 fallos en 5 corridas completas seguidas; el 2026-10-28, 10 corridas seguidas de integración (850 ejecuciones) sin fallos |
 
 | RNF | Resultado medido |
 |---|---|
@@ -157,14 +158,13 @@ Además, dos recorridos HTTP de la demo contra la API y la base reales (39 compr
 
 # 9. Calidad
 
-0 advertencias de compilación; ningún paquete con vulnerabilidades conocidas; cobertura de líneas de 97,6 % en el dominio, 99,3 % en aplicación, 98,0 % en la API y 95,9 % en infraestructura (sin contar migraciones). En el historial de git no hay secretos. El detalle está en `docs/calidad.md`.
+0 advertencias de compilación; ningún paquete con vulnerabilidades conocidas; cobertura de líneas de 97,6 % en el dominio, 99,3 % en aplicación, 98,0 % en la API, 95,9 % en infraestructura (sin contar migraciones) y 60,1 % en la web, medida el 2026-10-28. En el historial de git no hay secretos. El detalle está en `docs/calidad.md`.
 
 # 10. Despliegue y ejecución
 
 | Opción | Pasos |
 |---|---|
-| Ejecución local | Sin Docker (ADR-007). SQL Server local o LocalDB, con los comandos del README. API en `:5300/swagger` y web en `:5400` |
-| Local (camino probado) | SQL Server o LocalDB; configurar con `dotnet user-secrets` las claves `Jwt:Clave`, `ConnectionStrings:Sisman`, `Migraciones:AplicarAlArrancar`, `Semilla:Habilitada`, `Semilla:ClavePlanificador` y `Semilla:ClaveEspecialista`; `dotnet run` en la API (puerto 5300) y en la web (`Api__UrlBase`, puerto 5400) |
+| Local (único camino, probado) | Sin Docker (ADR-007). SQL Server local o LocalDB; configurar con `dotnet user-secrets` las claves `Jwt:Clave`, `ConnectionStrings:Sisman`, `Migraciones:AplicarAlArrancar`, `Semilla:Habilitada`, `Semilla:ClavePlanificador` y `Semilla:ClaveEspecialista`; `dotnet run` en la API (puerto 5300) y en la web (`Api__UrlBase`, puerto 5400) |
 | Pruebas | `dotnet test` (usan LocalDB o `SISMAN_TEST_CONNECTION`) |
 
 | Configuración | Obligatoria | Dónde |
@@ -176,20 +176,21 @@ Además, dos recorridos HTTP de la demo contra la API y la base reales (39 compr
 
 # 11. Uso de IA
 
-Todo el trabajo se hizo con Claude Code, con la especificación como contexto. Hay 14 evidencias en `docs/ia/`: qué se pidió, qué respondió la IA, qué cambió y si se aceptó, se corrigió o se rechazó, y por qué. Ejemplos:
+Todo el trabajo se hizo con Claude Code, con la especificación como contexto. Hay 16 evidencias en `docs/ia/`: qué se pidió, qué respondió la IA, qué cambió y si se aceptó, se corrigió o se rechazó, y por qué. Ejemplos:
 - Una conclusión equivocada que se corrigió (002).
 - Errores de herramienta que se rehicieron (003, 006).
 - La prueba de mutación que demostró que la prueba concurrente detecta el defecto real (011).
 - Fallos de pruebas que resultaron ser de la propia prueba y no del sistema (011, 013, 014).
+- Una recomendación de la IA que se rechazó: conservar `docker/` sin haberlo ejecutado (015).
 
 El resumen está en `docs/ia/resumen.md`.
 
 # 12. Limitaciones y mejoras pendientes
 
-1. Reglas a validar con un usuario: efecto de aprobar (RN-15, RN-16), no repetir fecha (RN-23) y transiciones de estado (RN-37).
+1. Reglas decididas por el responsable el 2026-10-26 que falta validar con usuarios de planta: efecto de aprobar (RN-15, RN-16), fechas de un MP modificado (RN-22), no repetir fecha (RN-23) y transiciones de estado (RN-37).
 2. Sin Docker: el despliegue es local (ADR-007).
 3. La edición de MP no envía un token de versión del cliente; la concurrencia se detecta solo dentro de la misma solicitud.
 4. Eliminar una fecha no recalcula las fechas del MP.
 5. Sin *refresh token* ni bloqueo de cuenta por intentos fallidos.
-6. Un fallo aislado de una prueba no reproducido (ver `docs/calidad.md`).
+6. Un fallo aislado de una prueba el 2026-10-23, no reproducido en 10 corridas seguidas (evidencia 014 y `docs/calidad.md`).
 7. Fuera del módulo: reportes, rotativa, personal en la OT e integración con los sistemas de la empresa.
