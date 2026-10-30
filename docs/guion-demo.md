@@ -1,6 +1,6 @@
 # Guion de la demo (5 minutos)
 
-Sigue la diapositiva 11 de la presentación (v1.2, 2026-10-28).
+Sigue la diapositiva 11 de la presentación (v1.3, 2026-10-30).
 
 ## Preparación (antes de presentar)
 
